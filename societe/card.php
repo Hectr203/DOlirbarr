@@ -1341,7 +1341,15 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 			}
 
 			// Alias names (commercial, trademark or alias names)
-			print '<tr id="name_alias"><td><label for="name_alias_input">'.$langs->trans('AliasNames').'</label></td>';
+			/*
+
+
+
+			SE MODIFICO Alias names (commercial, trademark or alias names) POR EL APELLIDO
+			*/
+
+
+			print '<tr id="name_alias"><td><label for="name_alias_input">'.$langs->trans('Apellido').'</label></td>';
 			print '<td colspan="3"><input type="text" class="minwidth300" name="name_alias" id="name_alias_input" value="'.dol_escape_htmltag($object->name_alias).'"></td></tr>';
 
 			// Prospect/Customer
@@ -1370,7 +1378,9 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 
 			if ((isModEnabled("fournisseur") && $user->hasRight('fournisseur', 'lire') && !getDolGlobalString('MAIN_USE_NEW_SUPPLIERMOD')) || (isModEnabled("supplier_order") && $user->hasRight('supplier_order', 'lire')) || (isModEnabled("supplier_invoice") && $user->hasRight('supplier_invoice', 'lire'))
 				|| (isModEnabled('supplier_proposal') && $user->hasRight('supplier_proposal', 'lire'))) {
-				// Supplier
+				
+				
+					// Supplier
 				print '<tr>';
 				print '<td>'.$form->editfieldkey('Vendor', 'fournisseur', '', $object, 0, 'string', '', 1).'</td><td>';
 				$default = -1;
@@ -1437,10 +1447,13 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 			if ($conf->browser->layout == 'phone') {
 				print '</tr><tr>';
 			}
-			print '<td class="tdtop">'.$form->editfieldkey('Town', 'town', '', $object, 0).'</td><td>';
-			print $formcompany->select_ziptown($object->town, 'town', array('zipcode', 'selectcountry_id', 'state_id'), 0, 0, '', 'maxwidth150 quatrevingtpercent');
-			print $form->widgetForTranslation("town", $object, $permissiontoadd, 'string', 'alphanohtml', 'maxwidth100 quatrevingtpercent');
-			print '</td></tr>';
+
+			// SE ELIMINA LA POBLACION 
+
+			// print '<td class="tdtop">'.$form->editfieldkey('Town', 'town', '', $object, 0).'</td><td>';
+			// print $formcompany->select_ziptown($object->town, 'town', array('zipcode', 'selectcountry_id', 'state_id'), 0, 0, '', 'maxwidth150 quatrevingtpercent');
+			// print $form->widgetForTranslation("town", $object, $permissiontoadd, 'string', 'alphanohtml', 'maxwidth100 quatrevingtpercent');
+			// print '</td></tr>';
 
 			// Country
 			print '<tr><td>'.$form->editfieldkey('Country', 'selectcountry_id', '', $object, 0).'</td><td colspan="3" class="maxwidthonsmartphone">';
@@ -1474,8 +1487,12 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 			if ($conf->browser->layout == 'phone') {
 				print '</tr><tr>';
 			}
-			print '<td>'.$form->editfieldkey('Fax', 'fax', '', $object, 0).'</td>';
-			print '<td'.($conf->browser->layout == 'phone' ? ' colspan="3"' : '').'>'.img_picto('', 'object_phoning_fax', 'class="pictofixedwidth"').' <input type="text" name="fax" id="fax" class="maxwidth200 widthcentpercentminusx" value="'.(GETPOSTISSET('fax') ? GETPOST('fax', 'alpha') : $object->fax).'"></td></tr>';
+
+			// SE ELMINA EL FAX
+
+
+			// print '<td>'.$form->editfieldkey('Fax', 'fax', '', $object, 0).'</td>';
+			// print '<td'.($conf->browser->layout == 'phone' ? ' colspan="3"' : '').'>'.img_picto('', 'object_phoning_fax', 'class="pictofixedwidth"').' <input type="text" name="fax" id="fax" class="maxwidth200 widthcentpercentminusx" value="'.(GETPOSTISSET('fax') ? GETPOST('fax', 'alpha') : $object->fax).'"></td></tr>';
 
 			// Email / Web
 			print '<tr><td>'.$form->editfieldkey('EMail', 'email', '', $object, 0, 'string', '', !getDolGlobalString('SOCIETE_EMAIL_MANDATORY') ? '' : $conf->global->SOCIETE_EMAIL_MANDATORY).'</td>';
@@ -1487,9 +1504,11 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 				print '<td class="individualline noemail">'.$form->editfieldkey($langs->trans('No_Email') .' ('.$langs->trans('Contact').')', 'contact_no_email', '', $object, 0).'</td>';
 				print '<td class="individualline" '.(($conf->browser->layout == 'phone') || !isModEnabled('mailing') ? ' colspan="3"' : '').'>'.$form->selectyesno('contact_no_email', (GETPOSTISSET("contact_no_email") ? GETPOST("contact_no_email", 'alpha') : (empty($object->no_email) ? 0 : 1)), 1, false, 1).'</td>';
 			}
-			print '</tr>';
-			print '<tr><td>'.$form->editfieldkey('Web', 'url', '', $object, 0).'</td>';
-			print '<td colspan="3">'.img_picto('', 'globe', 'class="pictofixedwidth"').' <input type="text" class="maxwidth500 widthcentpercentminusx" name="url" id="url" value="'.$object->url.'"></td></tr>';
+
+			// SE ELIMINA WEL WEB SITE
+			// print '</tr>';
+			// print '<tr><td>'.$form->editfieldkey('Web', 'url', '', $object, 0).'</td>';
+			// print '<td colspan="3">'.img_picto('', 'globe', 'class="pictofixedwidth"').' <input type="text" class="maxwidth500 widthcentpercentminusx" name="url" id="url" value="'.$object->url.'"></td></tr>';
 
 			// Unsubscribe
 			if (isModEnabled('mailing')) {
@@ -1520,10 +1539,11 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 				print '</tr>';
 			}
 
-			// Social networks
-			if (isModEnabled('socialnetworks')) {
-				$object->showSocialNetwork($socialnetworks, ($conf->browser->layout == 'phone' ? 2 : 4));
-			}
+			// ELIMINAMOS LAS REDES SOCIALES 
+			// // Social networks
+			// if (isModEnabled('socialnetworks')) {
+			// 	$object->showSocialNetwork($socialnetworks, ($conf->browser->layout == 'phone' ? 2 : 4));
+			// }
 
 			// Prof ids
 			$i = 1;
@@ -1553,55 +1573,55 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 			if ($NBCOLS > 1 && ($j % 2 == 1)) {
 				print '<td colspan="2"></td></tr>';
 			}
-
+			// SE ELIMINO LA SECCION DE INPUESTOS 
 			// Vat is used
-			print '<tr><td>'.$form->editfieldkey('VATIsUsed', 'assujtva_value', '', $object, 0).'</td>';
-			print '<td>';
-			print '<input id="assujtva_value" name="assujtva_value" type="checkbox" ' . (GETPOSTISSET('assujtva_value') ? 'checked="checked"' : 'checked="checked"') . ' value="1">'; // Assujeti par defaut en creation
-			print '</td>';
-			if ($conf->browser->layout == 'phone') {
-				print '</tr><tr>';
-			}
-			print '<td class="nowrap">'.$form->editfieldkey('VATIntra', 'intra_vat', '', $object, 0).'</td>';
-			print '<td class="nowrap">';
-			$s = '<input type="text" class="flat maxwidthonsmartphone" name="tva_intra" id="intra_vat" maxlength="20" value="'.$object->tva_intra.'">';
+			// print '<tr><td>'.$form->editfieldkey('VATIsUsed', 'assujtva_value', '', $object, 0).'</td>';
+			// print '<td>';
+			// print '<input id="assujtva_value" name="assujtva_value" type="checkbox" ' . (GETPOSTISSET('assujtva_value') ? 'checked="checked"' : 'checked="checked"') . ' value="1">'; // Assujeti par defaut en creation
+			// print '</td>';
+			// if ($conf->browser->layout == 'phone') {
+			// 	print '</tr><tr>';
+			// }
+			// print '<td class="nowrap">'.$form->editfieldkey('VATIntra', 'intra_vat', '', $object, 0).'</td>';
+			// print '<td class="nowrap">';
+			// $s = '<input type="text" class="flat maxwidthonsmartphone" name="tva_intra" id="intra_vat" maxlength="20" value="'.$object->tva_intra.'">';
 
-			if (!getDolGlobalString('MAIN_DISABLEVATCHECK') && isInEEC($object)) {
-				$s .= ' ';
+			// if (!getDolGlobalString('MAIN_DISABLEVATCHECK') && isInEEC($object)) {
+			// 	$s .= ' ';
 
-				if (!empty($conf->use_javascript_ajax)) {
-					$widthpopup = 600;
-					if (!empty($conf->dol_use_jmobile)) {
-						$widthpopup = 350;
-					}
-					$heightpopup = 400;
-					print "\n";
-					print '<script type="text/javascript">';
-					print "function CheckVAT(a) {\n";
-					if ($mysoc->country_code == 'GR' && $object->country_code == 'GR' && !empty($u)) {
-						print "GRVAT(a,'{$u}','{$p}','{$myafm}');\n";
-					} else {
-						print "newpopup('".DOL_URL_ROOT."/societe/checkvat/checkVatPopup.php?vatNumber='+a, '".dol_escape_js($langs->trans("VATIntraCheckableOnEUSite"))."', ".$widthpopup.", ".$heightpopup.");\n";
-					}
-					print "}\n";
-					print '</script>';
-					print "\n";
-					$s .= '<a href="#" class="hideonsmartphone" onclick="CheckVAT(document.formsoc.tva_intra.value);">'.$langs->trans("VATIntraCheck").'</a>';
-					$s = $form->textwithpicto($s, $langs->trans("VATIntraCheckDesc", $langs->transnoentitiesnoconv("VATIntraCheck")), 1);
-				} else {
-					$s .= '<a href="'.$langs->transcountry("VATIntraCheckURL", $object->country_id).'" target="_blank" rel="noopener noreferrer">'.img_picto($langs->trans("VATIntraCheckableOnEUSite"), 'help').'</a>';
-				}
-			}
-			print $s;
-			print '</td>';
-			print '</tr>';
+			// 	if (!empty($conf->use_javascript_ajax)) {
+			// 		$widthpopup = 600;
+			// 		if (!empty($conf->dol_use_jmobile)) {
+			// 			$widthpopup = 350;
+			// 		}
+			// 		$heightpopup = 400;
+			// 		print "\n";
+			// 		print '<script type="text/javascript">';
+			// 		print "function CheckVAT(a) {\n";
+			// 		if ($mysoc->country_code == 'GR' && $object->country_code == 'GR' && !empty($u)) {
+			// 			print "GRVAT(a,'{$u}','{$p}','{$myafm}');\n";
+			// 		} else {
+			// 			print "newpopup('".DOL_URL_ROOT."/societe/checkvat/checkVatPopup.php?vatNumber='+a, '".dol_escape_js($langs->trans("VATIntraCheckableOnEUSite"))."', ".$widthpopup.", ".$heightpopup.");\n";
+			// 		}
+			// 		print "}\n";
+			// 		print '</script>';
+			// 		print "\n";
+			// 		$s .= '<a href="#" class="hideonsmartphone" onclick="CheckVAT(document.formsoc.tva_intra.value);">'.$langs->trans("VATIntraCheck").'</a>';
+			// 		$s = $form->textwithpicto($s, $langs->trans("VATIntraCheckDesc", $langs->transnoentitiesnoconv("VATIntraCheck")), 1);
+			// 	} else {
+			// 		$s .= '<a href="'.$langs->transcountry("VATIntraCheckURL", $object->country_id).'" target="_blank" rel="noopener noreferrer">'.img_picto($langs->trans("VATIntraCheckableOnEUSite"), 'help').'</a>';
+			// 	}
+			// }
+			// print $s;
+			// print '</td>';
+			// print '</tr>';
 
 			// VAT reverse charge by default
-			if (getDolGlobalString('ACCOUNTING_FORCE_ENABLE_VAT_REVERSE_CHARGE')) {
-				print '<tr><td>' . $form->editfieldkey('VATReverseChargeByDefault', 'vat_reverse_charge', '', $object, 0) . '</td><td colspan="3">';
-				print '<input type="checkbox" name="vat_reverse_charge" '.($object->vat_reverse_charge == '1' ? ' checked' : '').'>';
-				print '</td></tr>';
-			}
+			// if (getDolGlobalString('ACCOUNTING_FORCE_ENABLE_VAT_REVERSE_CHARGE')) {
+			// 	print '<tr><td>' . $form->editfieldkey('VATReverseChargeByDefault', 'vat_reverse_charge', '', $object, 0) . '</td><td colspan="3">';
+			// 	print '<input type="checkbox" name="vat_reverse_charge" '.($object->vat_reverse_charge == '1' ? ' checked' : '').'>';
+			// 	print '</td></tr>';
+			// }
 
 			// Local Taxes
 			//TODO: Place into a function to control showing by country or study better option
@@ -1625,52 +1645,71 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 				print '</td></tr>';
 			}
 
+				// eliminamos la inffo del equipo
+
+
 			// Type - Workforce/Staff
-			print '<tr><td>'.$form->editfieldkey('ThirdPartyType', 'typent_id', '', $object, 0).'</td><td class="maxwidthonsmartphone"'.(($conf->browser->layout == 'phone' || getDolGlobalString('SOCIETE_DISABLE_WORKFORCE')) ? ' colspan="3"' : '').'>'."\n";
-			$sortparam = (!getDolGlobalString('SOCIETE_SORT_ON_TYPEENT') ? 'ASC' : $conf->global->SOCIETE_SORT_ON_TYPEENT); // NONE means we keep sort of original array, so we sort on position. ASC, means next function will sort on label.
-			print $form->selectarray("typent_id", $formcompany->typent_array(0), $object->typent_id, 1, 0, 0, '', 0, 0, 0, $sortparam, '', 1);
-			if ($user->admin) {
-				print ' '.info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
-			}
-			if (!getDolGlobalString('SOCIETE_DISABLE_WORKFORCE')) {
-				print '</td>';
-				if ($conf->browser->layout == 'phone') {
-					print '</tr><tr>';
-				}
-				print '<td>'.$form->editfieldkey('Workforce', 'effectif_id', '', $object, 0).'</td><td class="maxwidthonsmartphone"'.($conf->browser->layout == 'phone' ? ' colspan="3"' : '').'>';
-				print $form->selectarray("effectif_id", $formcompany->effectif_array(0), $object->effectif_id, 0, 0, 0, '', 0, 0, 0, '', '', 1);
-				if ($user->admin) {
-					print ' '.info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
-				}
-			} else {
-				print '<input type="hidden" name="effectif_id" id="effectif_id" value="'.$object->effectif_id.'">';
-			}
-			print '</td></tr>';
+			// print '<tr><td>'.$form->editfieldkey('ThirdPartyType', 'typent_id', '', $object, 0).'</td><td class="maxwidthonsmartphone"'.(($conf->browser->layout == 'phone' || getDolGlobalString('SOCIETE_DISABLE_WORKFORCE')) ? ' colspan="3"' : '').'>'."\n";
+			// $sortparam = (!getDolGlobalString('SOCIETE_SORT_ON_TYPEENT') ? 'ASC' : $conf->global->SOCIETE_SORT_ON_TYPEENT); // NONE means we keep sort of original array, so we sort on position. ASC, means next function will sort on label.
+			// print $form->selectarray("typent_id", $formcompany->typent_array(0), $object->typent_id, 1, 0, 0, '', 0, 0, 0, $sortparam, '', 1);
+			// if ($user->admin) {
+			// 	print ' '.info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
+			// }
+			// if (!getDolGlobalString('SOCIETE_DISABLE_WORKFORCE')) {
+			// 	print '</td>';
+			// 	if ($conf->browser->layout == 'phone') {
+			// 		print '</tr><tr>';
+			// 	}
+			// 	print '<td>'.$form->editfieldkey('Workforce', 'effectif_id', '', $object, 0).'</td><td class="maxwidthonsmartphone"'.($conf->browser->layout == 'phone' ? ' colspan="3"' : '').'>';
+			// 	print $form->selectarray("effectif_id", $formcompany->effectif_array(0), $object->effectif_id, 0, 0, 0, '', 0, 0, 0, '', '', 1);
+			// 	if ($user->admin) {
+			// 		print ' '.info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
+			// 	}
+			// } else {
+			// 	print '<input type="hidden" name="effectif_id" id="effectif_id" value="'.$object->effectif_id.'">';
+			// }
+			// print '</td></tr>';
 
-			// Legal Form
-			print '<tr><td>'.$form->editfieldkey('JuridicalStatus', 'forme_juridique_code', '', $object, 0).'</td>';
-			print '<td colspan="3" class="maxwidthonsmartphone">';
-			if ($object->country_id) {
-				print $formcompany->select_juridicalstatus($object->forme_juridique_code, $object->country_code, '', 'forme_juridique_code');
-			} else {
-				print $countrynotdefined;
-			}
-			print '</td></tr>';
 
-			// Capital
-			print '<tr><td>'.$form->editfieldkey('Capital', 'capital', '', $object, 0).'</td>';
-			print '<td colspan="3"><input type="text" name="capital" id="capital" class="maxwidth100" value="'.$object->capital.'"> ';
-			if (isModEnabled("multicurrency")) {
-				print '<span class="hideonsmartphone">'.$langs->trans("Currency".$object->multicurrency_code).'</span></td></tr>';
-			} else {
-				print '<span class="hideonsmartphone">'.$langs->trans("Currency".$conf->currency).'</span></td></tr>';
-			}
-			if (getDolGlobalInt('MAIN_MULTILANGS')) {
-				print '<tr><td>'.$form->editfieldkey('DefaultLang', 'default_lang', '', $object, 0).'</td><td colspan="3" class="maxwidthonsmartphone">'."\n";
-				print img_picto('', 'language', 'class="pictofixedwidth"').$formadmin->select_language(GETPOST('default_lang', 'alpha') ? GETPOST('default_lang', 'alpha') : ($object->default_lang ? $object->default_lang : ''), 'default_lang', 0, 0, 1, 0, 0, 'maxwidth200onsmartphone');
-				print '</td>';
-				print '</tr>';
-			}
+
+
+/* se elimino el tipo de comercio 
+*/
+
+
+			// // Legal Form
+			// print '<tr><td>'.$form->editfieldkey('JuridicalStatus', 'forme_juridique_code', '', $object, 0).'</td>';
+			// print '<td colspan="3" class="maxwidthonsmartphone">';
+			// if ($object->country_id) {
+			// 	print $formcompany->select_juridicalstatus($object->forme_juridique_code, $object->country_code, '', 'forme_juridique_code');
+			// } else {
+			// 	print $countrynotdefined;
+			// }
+			// print '</td></tr>';
+
+
+
+/*
+
+se elimino LAINFORMACION DEL CAPLITAL 
+*/
+
+
+
+			// // Capital
+			// print '<tr><td>'.$form->editfieldkey('Capital', 'capital', '', $object, 0).'</td>';
+			// print '<td colspan="3"><input type="text" name="capital" id="capital" class="maxwidth100" value="'.$object->capital.'"> ';
+			// if (isModEnabled("multicurrency")) {
+			// 	print '<span class="hideonsmartphone">'.$langs->trans("Currency".$object->multicurrency_code).'</span></td></tr>';
+			// } else {
+			// 	print '<span class="hideonsmartphone">'.$langs->trans("Currency".$conf->currency).'</span></td></tr>';
+			// }
+			// if (getDolGlobalInt('MAIN_MULTILANGS')) {
+			// 	print '<tr><td>'.$form->editfieldkey('DefaultLang', 'default_lang', '', $object, 0).'</td><td colspan="3" class="maxwidthonsmartphone">'."\n";
+			// 	print img_picto('', 'language', 'class="pictofixedwidth"').$formadmin->select_language(GETPOST('default_lang', 'alpha') ? GETPOST('default_lang', 'alpha') : ($object->default_lang ? $object->default_lang : ''), 'default_lang', 0, 0, 1, 0, 0, 'maxwidth200onsmartphone');
+			// 	print '</td>';
+			// 	print '</tr>';
+			// }
 
 			// Incoterms
 			if (isModEnabled('incoterm')) {
@@ -1717,19 +1756,24 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 				print '</td></tr>';
 			}
 
-			// Other attributes
-			$parameters = array('socid'=>$socid, 'colspan' => ' colspan="3"', 'colspanvalue' => '3');
-			include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_add.tpl.php';
 
-			// Parent company
-			if (!getDolGlobalString('SOCIETE_DISABLE_PARENTCOMPANY')) {
-				print '<tr>';
-				print '<td>'.$langs->trans('ParentCompany').'</td>';
-				print '<td colspan="3" class="maxwidthonsmartphone">';
-				print img_picto('', 'company', 'class="paddingrightonly"');
-				print $form->select_company(GETPOST('parent_company_id'), 'parent_company_id', '', 'SelectThirdParty', 0, 0, null, 0, 'minwidth300 maxwidth500 widthcentpercentminusxx');
-				print '</td></tr>';
-			}
+			/**
+			 * 
+			 * se elimino sede Principal
+			 */
+			// // Other attributes
+			// $parameters = array('socid'=>$socid, 'colspan' => ' colspan="3"', 'colspanvalue' => '3');
+			// include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_add.tpl.php';
+
+			// // Parent company
+			// if (!getDolGlobalString('SOCIETE_DISABLE_PARENTCOMPANY')) {
+			// 	print '<tr>';
+			// 	print '<td>'.$langs->trans('ParentCompany').'</td>';
+			// 	print '<td colspan="3" class="maxwidthonsmartphone">';
+			// 	print img_picto('', 'company', 'class="paddingrightonly"');
+			// 	print $form->select_company(GETPOST('parent_company_id'), 'parent_company_id', '', 'SelectThirdParty', 0, 0, null, 0, 'minwidth300 maxwidth500 widthcentpercentminusxx');
+			// 	print '</td></tr>';
+			// }
 
 			// Assign a sale representative
 			print '<tr>';
@@ -1790,6 +1834,13 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 		print $form->buttonsSaveCancel("AddThirdParty", 'Cancel', null, 0, '', $dol_openinpopup);
 
 		print '</form>'."\n";
+
+
+		/* AQUI TERMIA EL FORMULARIO DE LOS PROSPECTOS */
+
+
+	
+
 	} elseif ($action == 'edit') {
 		//print load_fiche_titre($langs->trans("EditCompany"));
 
@@ -2055,8 +2106,8 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 				print $form->widgetForTranslation("name", $object, $permissiontoadd, 'string', 'alphanohtml', 'minwidth300');
 				print '</td></tr>';
 
-				// Alias names (commercial, trademark or alias names)
-				print '<tr id="name_alias"><td><label for="name_alias_input">'.$langs->trans('AliasNames').'</label></td>';
+				//se cambio Alias names (commercial, trademark or alias names) por APELLIDO 
+				print '<tr id="name_alias"><td><label for="name_alias_input">'.$langs->trans('Apellido').'</label></td>';
 				print '<td colspan="3"><input type="text" class="minwidth300" name="name_alias" id="name_alias_input" value="'.dol_escape_htmltag($object->name_alias).'"></td></tr>';
 
 				// Prefix
@@ -2174,10 +2225,17 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 				if ($conf->browser->layout == 'phone') {
 					print '</tr><tr>';
 				}
-				print '<td>'.$form->editfieldkey('Town', 'town', '', $object, 0).'</td><td'.($conf->browser->layout == 'phone' ? ' colspan="3"' : '').'>';
-				print $formcompany->select_ziptown($object->town, 'town', array('zipcode', 'selectcountry_id', 'state_id'));
-				print $form->widgetForTranslation("town", $object, $permissiontoadd, 'string', 'alphanohtml', 'maxwidth100 quatrevingtpercent');
-				print '</td></tr>';
+
+
+				/** ELIMNAM0S POBLACION 
+				 * 
+				 * 
+				 * 
+				*/
+				// print '<td>'.$form->editfieldkey('Town', 'town', '', $object, 0).'</td><td'.($conf->browser->layout == 'phone' ? ' colspan="3"' : '').'>';
+				// print $formcompany->select_ziptown($object->town, 'town', array('zipcode', 'selectcountry_id', 'state_id'));
+				// print $form->widgetForTranslation("town", $object, $permissiontoadd, 'string', 'alphanohtml', 'maxwidth100 quatrevingtpercent');
+				// print '</td></tr>';
 
 				// Country
 				print '<tr><td>'.$form->editfieldkey('Country', 'selectcounty_id', '', $object, 0).'</td><td colspan="3">';
@@ -2207,13 +2265,21 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 				if ($conf->browser->layout == 'phone') {
 					print '</tr><tr>';
 				}
-				print '<td>'.$form->editfieldkey('Fax', 'fax', GETPOST('fax', 'alpha'), $object, 0).'</td>';
-				print '<td'.($conf->browser->layout == 'phone' ? ' colspan="3"' : '').'>'.img_picto('', 'object_phoning_fax', 'class="pictofixedwidth"').' <input type="text" name="fax" id="fax" class="maxwidth200 widthcentpercentminusx" value="'.(GETPOSTISSET('fax') ? GETPOST('fax', 'alpha') : $object->fax).'"></td>';
-				print '</tr>';
+				/**
+				 * ELIMINAMOS EL FAX
+				 * 
+				 */
+				// print '<td>'.$form->editfieldkey('Fax', 'fax', GETPOST('fax', 'alpha'), $object, 0).'</td>';
+				// print '<td'.($conf->browser->layout == 'phone' ? ' colspan="3"' : '').'>'.img_picto('', 'object_phoning_fax', 'class="pictofixedwidth"').' <input type="text" name="fax" id="fax" class="maxwidth200 widthcentpercentminusx" value="'.(GETPOSTISSET('fax') ? GETPOST('fax', 'alpha') : $object->fax).'"></td>';
+				// print '</tr>';
 
-				// Web
-				print '<tr><td>'.$form->editfieldkey('Web', 'url', GETPOST('url', 'alpha'), $object, 0).'</td>';
-				print '<td colspan="3">'.img_picto('', 'globe', 'class="pictofixedwidth"').' <input type="text" name="url" id="url" class="maxwidth200onsmartphone maxwidth300 widthcentpercentminusx " value="'.(GETPOSTISSET('url') ? GETPOST('url', 'alpha') : $object->url).'"></td></tr>';
+				/**
+				 * ELIMINAMOS EL WEB SITE
+				 * 
+				 */
+				// // Web
+				// print '<tr><td>'.$form->editfieldkey('Web', 'url', GETPOST('url', 'alpha'), $object, 0).'</td>';
+				// print '<td colspan="3">'.img_picto('', 'globe', 'class="pictofixedwidth"').' <input type="text" name="url" id="url" class="maxwidth200onsmartphone maxwidth300 widthcentpercentminusx " value="'.(GETPOSTISSET('url') ? GETPOST('url', 'alpha') : $object->url).'"></td></tr>';
 
 				// EMail
 				print '<tr><td>'.$form->editfieldkey('EMail', 'email', GETPOST('email', 'alpha'), $object, 0, 'string', '', (getDolGlobalString('SOCIETE_EMAIL_MANDATORY'))).'</td>';
@@ -2258,10 +2324,14 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 					print '</tr>';
 				}
 
-				// Social network
-				if (isModEnabled('socialnetworks')) {
-					$object->showSocialNetwork($socialnetworks, ($conf->browser->layout == 'phone' ? 2 : 4));
-				}
+				/**
+				 * 
+				 * SI SE HABIA COLOCADO REDES SOCIALES SE COLOCABAN PERO EN ESTE CASO SE ELIMINO ESA SECCION
+				 */
+				// // Social network
+				// if (isModEnabled('socialnetworks')) {
+				// 	$object->showSocialNetwork($socialnetworks, ($conf->browser->layout == 'phone' ? 2 : 4));
+				// }
 
 				// Prof ids
 				$i = 1;
@@ -2290,11 +2360,14 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 				if ($NBCOLS > 0 && $j % 2 == 1) {
 					print '<td colspan="2"></td></tr>';
 				}
-
-				// VAT is used
-				print '<tr><td>'.$form->editfieldkey('VATIsUsed', 'assujtva_value', '', $object, 0).'</td><td colspan="3">';
-				print '<input id="assujtva_value" name="assujtva_value" type="checkbox" ' . ($object->tva_assuj ? 'checked="checked"' : '') . ' value="1">';
-				print '</td></tr>';
+/**
+ * 
+ * SE ELIMINO LA SECCION DE IMPIESTOS 
+ */
+				// // VAT is used
+				// print '<tr><td>'.$form->editfieldkey('VATIsUsed', 'assujtva_value', '', $object, 0).'</td><td colspan="3">';
+				// print '<input id="assujtva_value" name="assujtva_value" type="checkbox" ' . ($object->tva_assuj ? 'checked="checked"' : '') . ' value="1">';
+				// print '</td></tr>';
 
 				// Local Taxes
 				//TODO: Place into a function to control showing by country or study better option
@@ -2343,76 +2416,89 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 					print '</td></tr>';
 				}
 
+				/**
+				 * 
+				 * SE ELINIMO  CIF Intra.
+				 */
 				// VAT Code
-				print '<tr><td>'.$form->editfieldkey('VATIntra', 'intra_vat', '', $object, 0).'</td>';
-				print '<td colspan="3">';
-				$s = '<input type="text" class="flat maxwidthonsmartphone" name="tva_intra" id="intra_vat" maxlength="20" value="'.$object->tva_intra.'">';
+					// print '<tr><td>'.$form->editfieldkey('VATIntra', 'intra_vat', '', $object, 0).'</td>';
+					// print '<td colspan="3">';
+					// $s = '<input type="text" class="flat maxwidthonsmartphone" name="tva_intra" id="intra_vat" maxlength="20" value="'.$object->tva_intra.'">';
 
-				if (!getDolGlobalString('MAIN_DISABLEVATCHECK') && isInEEC($object)) {
-					$s .= ' &nbsp; ';
+					// if (!getDolGlobalString('MAIN_DISABLEVATCHECK') && isInEEC($object)) {
+					// 	$s .= ' &nbsp; ';
 
-					if ($conf->use_javascript_ajax) {
-						$widthpopup = 600;
-						if (!empty($conf->dol_use_jmobile)) {
-							$widthpopup = 350;
-						}
-						$heightpopup = 400;
-						print "\n";
-						print '<script type="text/javascript">';
-						print "function CheckVAT(a) {\n";
-						if ($mysoc->country_code == 'GR' && $object->country_code == 'GR' && !empty($u)) {
-							print "GRVAT(a,'{$u}','{$p}','{$myafm}');\n";
-						} else {
-							print "newpopup('".DOL_URL_ROOT."/societe/checkvat/checkVatPopup.php?vatNumber='+a, '".dol_escape_js($langs->trans("VATIntraCheckableOnEUSite"))."', ".$widthpopup.", ".$heightpopup.");\n";
-						}
-						print "}\n";
-						print '</script>';
-						print "\n";
-						$s .= '<a href="#" class="hideonsmartphone" onclick="CheckVAT(document.formsoc.tva_intra.value);">'.$langs->trans("VATIntraCheck").'</a>';
-						$s = $form->textwithpicto($s, $langs->trans("VATIntraCheckDesc", $langs->transnoentitiesnoconv("VATIntraCheck")), 1);
-					} else {
-						$s .= '<a href="'.$langs->transcountry("VATIntraCheckURL", $object->country_id).'" class="hideonsmartphone" target="_blank" rel="noopener noreferrer">'.img_picto($langs->trans("VATIntraCheckableOnEUSite"), 'help').'</a>';
-					}
-				}
-				print $s;
-				print '</td>';
-				print '</tr>';
+					// 	if ($conf->use_javascript_ajax) {
+					// 		$widthpopup = 600;
+					// 		if (!empty($conf->dol_use_jmobile)) {
+					// 			$widthpopup = 350;
+					// 		}
+					// 		$heightpopup = 400;
+					// 		print "\n";
+					// 		print '<script type="text/javascript">';
+					// 		print "function CheckVAT(a) {\n";
+					// 		if ($mysoc->country_code == 'GR' && $object->country_code == 'GR' && !empty($u)) {
+					// 			print "GRVAT(a,'{$u}','{$p}','{$myafm}');\n";
+					// 		} else {
+					// 			print "newpopup('".DOL_URL_ROOT."/societe/checkvat/checkVatPopup.php?vatNumber='+a, '".dol_escape_js($langs->trans("VATIntraCheckableOnEUSite"))."', ".$widthpopup.", ".$heightpopup.");\n";
+					// 		}
+					// 		print "}\n";
+					// 		print '</script>';
+					// 		print "\n";
+					// 		$s .= '<a href="#" class="hideonsmartphone" onclick="CheckVAT(document.formsoc.tva_intra.value);">'.$langs->trans("VATIntraCheck").'</a>';
+					// 		$s = $form->textwithpicto($s, $langs->trans("VATIntraCheckDesc", $langs->transnoentitiesnoconv("VATIntraCheck")), 1);
+					// 	} else {
+					// 		$s .= '<a href="'.$langs->transcountry("VATIntraCheckURL", $object->country_id).'" class="hideonsmartphone" target="_blank" rel="noopener noreferrer">'.img_picto($langs->trans("VATIntraCheckableOnEUSite"), 'help').'</a>';
+					// 	}
+					// }
+					// print $s;
+					// print '</td>';
+					// print '</tr>';
+					
 
-				// Type - Workforce/Staff
-				print '<tr><td>'.$form->editfieldkey('ThirdPartyType', 'typent_id', '', $object, 0).'</td><td class="maxwidthonsmartphone"'.(($conf->browser->layout == 'phone' || getDolGlobalString('SOCIETE_DISABLE_WORKFORCE')) ? ' colspan="3"' : '').'>';
-				print $form->selectarray("typent_id", $formcompany->typent_array(0), $object->typent_id, 1, 0, 0, '', 0, 0, 0, (!getDolGlobalString('SOCIETE_SORT_ON_TYPEENT') ? 'ASC' : $conf->global->SOCIETE_SORT_ON_TYPEENT), '', 1);
-				if ($user->admin) {
-					print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
-				}
-				if (!getDolGlobalString('SOCIETE_DISABLE_WORKFORCE')) {
-					print '</td>';
-					if ($conf->browser->layout == 'phone') {
-						print '</tr><tr>';
-					}
-					print '<td>'.$form->editfieldkey('Workforce', 'effectif_id', '', $object, 0).'</td><td class="maxwidthonsmartphone">';
-					print $form->selectarray("effectif_id", $formcompany->effectif_array(0), $object->effectif_id, 0, 0, 0, '', 0, 0, 0, '', '', 1);
-					if ($user->admin) {
-						print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
-					}
-				} else {
-					print '<input type="hidden" name="effectif_id" id="effectif_id" value="'.$object->effectif_id.'">';
-				}
-				print '</td></tr>';
+/**
+ * 
+ * 
+ * SE ELIMINO LA SECCION DE: Tipo de tercero,	Personal, Tipo de entidad comercial	 Y Capital
+ */
 
-				// Juridical type
-				print '<tr><td>'.$form->editfieldkey('JuridicalStatus', 'forme_juridique_code', '', $object, 0).'</td><td class="maxwidthonsmartphone" colspan="3">';
-				print $formcompany->select_juridicalstatus($object->forme_juridique_code, $object->country_code, '', 'forme_juridique_code');
-				print '</td></tr>';
 
-				// Capital
-				print '<tr><td>'.$form->editfieldkey('Capital', 'capital', '', $object, 0).'</td>';
-				print '<td colspan="3"><input type="text" name="capital" id="capital" size="10" value="';
-				print $object->capital != '' ? dol_escape_htmltag(price($object->capital)) : '';
-				if (isModEnabled("multicurrency")) {
-					print '"> <span class="hideonsmartphone">'.$langs->trans("Currency".$object->multicurrency_code).'</span></td></tr>';
-				} else {
-					print '"> <span class="hideonsmartphone">'.$langs->trans("Currency".$conf->currency).'</span></td></tr>';
-				}
+
+				// // Type - Workforce/Staff
+				// print '<tr><td>'.$form->editfieldkey('ThirdPartyType', 'typent_id', '', $object, 0).'</td><td class="maxwidthonsmartphone"'.(($conf->browser->layout == 'phone' || getDolGlobalString('SOCIETE_DISABLE_WORKFORCE')) ? ' colspan="3"' : '').'>';
+				// print $form->selectarray("typent_id", $formcompany->typent_array(0), $object->typent_id, 1, 0, 0, '', 0, 0, 0, (!getDolGlobalString('SOCIETE_SORT_ON_TYPEENT') ? 'ASC' : $conf->global->SOCIETE_SORT_ON_TYPEENT), '', 1);
+				// if ($user->admin) {
+				// 	print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
+				// }
+				// if (!getDolGlobalString('SOCIETE_DISABLE_WORKFORCE')) {
+				// 	print '</td>';
+				// 	if ($conf->browser->layout == 'phone') {
+				// 		print '</tr><tr>';
+				// 	}
+				// 	print '<td>'.$form->editfieldkey('Workforce', 'effectif_id', '', $object, 0).'</td><td class="maxwidthonsmartphone">';
+				// 	print $form->selectarray("effectif_id", $formcompany->effectif_array(0), $object->effectif_id, 0, 0, 0, '', 0, 0, 0, '', '', 1);
+				// 	if ($user->admin) {
+				// 		print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
+				// 	}
+				// } else {
+				// 	print '<input type="hidden" name="effectif_id" id="effectif_id" value="'.$object->effectif_id.'">';
+				// }
+				// print '</td></tr>';
+
+				// // Juridical type
+				// print '<tr><td>'.$form->editfieldkey('JuridicalStatus', 'forme_juridique_code', '', $object, 0).'</td><td class="maxwidthonsmartphone" colspan="3">';
+				// print $formcompany->select_juridicalstatus($object->forme_juridique_code, $object->country_code, '', 'forme_juridique_code');
+				// print '</td></tr>';
+
+				// // Capital
+				// print '<tr><td>'.$form->editfieldkey('Capital', 'capital', '', $object, 0).'</td>';
+				// print '<td colspan="3"><input type="text" name="capital" id="capital" size="10" value="';
+				// print $object->capital != '' ? dol_escape_htmltag(price($object->capital)) : '';
+				// if (isModEnabled("multicurrency")) {
+				// 	print '"> <span class="hideonsmartphone">'.$langs->trans("Currency".$object->multicurrency_code).'</span></td></tr>';
+				// } else {
+				// 	print '"> <span class="hideonsmartphone">'.$langs->trans("Currency".$conf->currency).'</span></td></tr>';
+				// }
 
 				// Default language
 				if (getDolGlobalInt('MAIN_MULTILANGS')) {
@@ -2471,28 +2557,31 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 					print $form->selectMultiCurrency((GETPOSTISSET('multicurrency_code') ? GETPOST('multicurrency_code') : ($object->multicurrency_code ? $object->multicurrency_code : $conf->currency)), 'multicurrency_code', 1, '', false, 'maxwidth150 widthcentpercentminusx');
 					print '</td></tr>';
 				}
+/**
+ * 
+ * se elimino 'Sede principal' 
+ */
+				// // Other attributes
+				// $parameters = array('socid'=>$socid, 'colspan' => ' colspan="3"', 'colspanvalue' => '3');
+				// include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_edit.tpl.php';
 
-				// Other attributes
-				$parameters = array('socid'=>$socid, 'colspan' => ' colspan="3"', 'colspanvalue' => '3');
-				include DOL_DOCUMENT_ROOT.'/core/tpl/extrafields_edit.tpl.php';
+				// // Parent company
+				// if (!getDolGlobalString('SOCIETE_DISABLE_PARENTCOMPANY')) {
+				// 	print '<tr>';
+				// 	print '<td>'.$langs->trans('ParentCompany').'</td>';
+				// 	print '<td colspan="3" class="maxwidthonsmartphone">';
+				// 	print img_picto('', 'company', 'class="pictofixedwidth"');
+				// 	print $form->select_company(GETPOST('parent_company_id') ? GETPOST('parent_company_id') : $object->parent, 'parent_company_id', '', 'SelectThirdParty', 0, 0, null, 0, 'minwidth300 maxwidth500 widthcentpercentminusxx');
+				// 	print '</td></tr>';
+				// }
 
-				// Parent company
-				if (!getDolGlobalString('SOCIETE_DISABLE_PARENTCOMPANY')) {
-					print '<tr>';
-					print '<td>'.$langs->trans('ParentCompany').'</td>';
-					print '<td colspan="3" class="maxwidthonsmartphone">';
-					print img_picto('', 'company', 'class="pictofixedwidth"');
-					print $form->select_company(GETPOST('parent_company_id') ? GETPOST('parent_company_id') : $object->parent, 'parent_company_id', '', 'SelectThirdParty', 0, 0, null, 0, 'minwidth300 maxwidth500 widthcentpercentminusxx');
-					print '</td></tr>';
-				}
-
-				// Webservices url/key
-				if (!empty($conf->syncsupplierwebservices->enabled)) {
-					print '<tr><td>'.$form->editfieldkey('WebServiceURL', 'webservices_url', '', $object, 0).'</td>';
-					print '<td><input type="text" name="webservices_url" id="webservices_url" size="32" value="'.$object->webservices_url.'"></td>';
-					print '<td>'.$form->editfieldkey('WebServiceKey', 'webservices_key', '', $object, 0).'</td>';
-					print '<td><input type="text" name="webservices_key" id="webservices_key" size="32" value="'.$object->webservices_key.'"></td></tr>';
-				}
+				// // Webservices url/key
+				// if (!empty($conf->syncsupplierwebservices->enabled)) {
+				// 	print '<tr><td>'.$form->editfieldkey('WebServiceURL', 'webservices_url', '', $object, 0).'</td>';
+				// 	print '<td><input type="text" name="webservices_url" id="webservices_url" size="32" value="'.$object->webservices_url.'"></td>';
+				// 	print '<td>'.$form->editfieldkey('WebServiceKey', 'webservices_key', '', $object, 0).'</td>';
+				// 	print '<td><input type="text" name="webservices_key" id="webservices_key" size="32" value="'.$object->webservices_key.'"></td></tr>';
+				// }
 
 				// Logo
 				print '<tr class="hideonsmartphone">';
