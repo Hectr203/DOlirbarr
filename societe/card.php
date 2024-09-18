@@ -1404,9 +1404,6 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 			print '<tr id="name_alias"><td><label for="name_alias_input" class="fieldrequired">'.$langs->trans('Apellido').'</label></td>';
 			print '<td colspan="3"><input type="text" class="minwidth300 " name="name_alias" id="name_alias_input" value="'.dol_escape_htmltag($object->name_alias).'"></td></tr>';
 			
-		
-		
-
 
 
 			// Prospect/Customer
@@ -1861,7 +1858,11 @@ se elimino LAINFORMACION DEL CAPLITAL
 			// }
 
 			// Assign a sale representative
-			print '<tr>';
+
+			$usursioActual=$user->login;
+			if ($usursioActual=='SUPER') {
+				// Si el usuario es admin, permitir edición
+				print '<tr>';
 			print '<td>'.$form->editfieldkey('AllocateCommercial', 'commercial_id', '', $object, 0).'</td>';
 			print '<td colspan="3" class="maxwidthonsmartphone">';
 			$userlist = $form->select_dolusers('', '', 0, null, 0, '', '', '0', 0, 0, 'AND u.statut = 1', 0, '', '', 0, 2);
@@ -1869,6 +1870,10 @@ se elimino LAINFORMACION DEL CAPLITAL
 			$selected = (count(GETPOST('commercial', 'array')) > 0 ? GETPOST('commercial', 'array') : (GETPOST('commercial', 'int') > 0 ? array(GETPOST('commercial', 'int')) : array($user->id)));
 			print img_picto('', 'user').$form->multiselectarray('commercial', $userlist, $selected, null, null, 'quatrevingtpercent widthcentpercentminusx', 0, 0);
 			print '</td></tr>';
+			}
+
+
+			
 
 			// Add logo
 			print '<tr class="hideonsmartphone">';
