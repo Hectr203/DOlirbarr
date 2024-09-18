@@ -119,7 +119,6 @@ if (empty($socid) && $action == 'view') {
 }
 
 $id = $socid;
-
 $object = new Societe($db);
 $extrafields = new ExtraFields($db);
 
@@ -271,6 +270,13 @@ if (empty($reshook)) {
 	}
 
 	// Add new or update third party
+
+
+	/**
+	 * 
+	 * 
+	 * AQUI SE VALIDAN LOS CAMPOS REQUERIDO YA NO ES VALIDAR INDPENDIENTEMENTE CADA UNO 
+	 */
 	if ((!GETPOST('getcustomercode') && !GETPOST('getsuppliercode'))
 	&& ($action == 'add' || $action == 'update') && $user->hasRight('societe', 'creer')) {
 		require_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
@@ -279,10 +285,56 @@ if (empty($reshook)) {
 			setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("ThirdPartyName")), null, 'errors');
 			$error++;
 		}
+		//apellido aleta
+		if (!GETPOST('name_alias')) {
+			setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("Apellido")), null, 'errors');
+			$error++;
+		}
+
+
+		
 		if (GETPOST('client', 'int') && GETPOST('client', 'int') < 0) {
 			setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("ProspectCustomer")), null, 'errors');
 			$error++;
 		}
+
+
+		// EMAIL Y TELEFONO
+		
+	
+				// Verificar si el campo 'phone' está presente y no está vacío
+		if (!GETPOST('phone')) {
+			setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("Phone")), null, 'errors');
+			$error++;
+		} else {
+			// Obtener el valor del campo 'phone'
+			$phone = GETPOST('phone', 'alpha');
+
+			// Validar que el teléfono contenga exactamente 10 dígitos
+			if (strlen($phone) == 10 && ctype_digit($phone)) {
+				// Asignar el valor validado al objeto
+				$object->phone = $phone;
+			} else {
+				// Mostrar mensaje de error si el teléfono no es válido
+				setEventMessages($langs->trans("ErrorFieldPhone", $langs->transnoentitiesnoconv("Phone")), null, 'errors');
+				$error++;
+			}
+		}
+
+
+
+		// Mostrar errores si los hay
+		if (!empty($errors)) {
+			foreach ($errors as $error) {
+				echo '<div class="error">'.$error.'</div>';
+			}
+		}
+		//email
+		if (!GETPOST('email')) {
+			setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("ThirdPartyEmail")), null, 'errors');
+			$error++;
+		}
+
 		if (GETPOSTISSET('fournisseur') && GETPOST('fournisseur', 'int') < 0) {
 			setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentitiesnoconv("Supplier")), null, 'errors');
 			$error++;
@@ -1325,20 +1377,20 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 			}
 			print '</tr>';
 
-			// If javascript on, we show option individual
-			if ($conf->use_javascript_ajax) {
-				if (getDolGlobalString('THIRDPARTY_SUGGEST_ALSO_ADDRESS_CREATION')) {
-					// Firstname
-					print '<tr class="individualline"><td>'.$form->editfieldkey('FirstName', 'firstname', '', $object, 0).'</td>';
-					print '<td colspan="3"><input type="text" class="minwidth300" maxlength="128" name="firstname" id="firstname" value="'.dol_escape_htmltag($object->firstname).'"></td>';
-					print '</tr>';
+			// // If javascript on, we show option individual
+			// if ($conf->use_javascript_ajax) {
+			// 	if (getDolGlobalString('THIRDPARTY_SUGGEST_ALSO_ADDRESS_CREATION')) {
+			// 		// Firstname
+			// 		print '<tr class="individualline"><td>'.$form->editfieldkey('FirstName', 'firstname', '', $object, 0).'</td>';
+			// 		print '<td colspan="3"><input type="text" class="minwidth300" maxlength="128" name="firstname" id="firstname" value="'.dol_escape_htmltag($object->firstname).'"></td>';
+			// 		print '</tr>';
 
-					// Title
-					print '<tr class="individualline"><td>'.$form->editfieldkey('UserTitle', 'civility_id', '', $object, 0).'</td><td colspan="3" class="maxwidthonsmartphone">';
-					print $formcompany->select_civility($object->civility_id, 'civility_id', 'maxwidth100').'</td>';
-					print '</tr>';
-				}
-			}
+			// 		// Title
+			// 		print '<tr class="individualline"><td>'.$form->editfieldkey('UserTitle', 'civility_id', '', $object, 0).'</td><td colspan="3" class="maxwidthonsmartphone">';
+			// 		print $formcompany->select_civility($object->civility_id, 'civility_id', 'maxwidth100').'</td>';
+			// 		print '</tr>';
+			// 	}
+			// }
 
 			// Alias names (commercial, trademark or alias names)
 			/*
@@ -1349,8 +1401,13 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 			*/
 
 
-			print '<tr id="name_alias"><td><label for="name_alias_input">'.$langs->trans('Apellido').'</label></td>';
-			print '<td colspan="3"><input type="text" class="minwidth300" name="name_alias" id="name_alias_input" value="'.dol_escape_htmltag($object->name_alias).'"></td></tr>';
+			print '<tr id="name_alias"><td><label for="name_alias_input" class="fieldrequired">'.$langs->trans('Apellido').'</label></td>';
+			print '<td colspan="3"><input type="text" class="minwidth300 " name="name_alias" id="name_alias_input" value="'.dol_escape_htmltag($object->name_alias).'"></td></tr>';
+			
+		
+		
+
+
 
 			// Prospect/Customer
 			print '<tr><td class="titlefieldcreate">'.$form->editfieldkey('ProspectCustomer', 'customerprospect', '', $object, 0, 'string', '', 1).'</td>';
@@ -1380,39 +1437,40 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 				|| (isModEnabled('supplier_proposal') && $user->hasRight('supplier_proposal', 'lire'))) {
 				
 				
+				// SECCION DEL PROOVEDOR 
 					// Supplier
-				print '<tr>';
-				print '<td>'.$form->editfieldkey('Vendor', 'fournisseur', '', $object, 0, 'string', '', 1).'</td><td>';
-				$default = -1;
-				if (getDolGlobalString('THIRDPARTY_SUPPLIER_BY_DEFAULT')) {
-					$default = 1;
-				}
-				print $form->selectyesno("fournisseur", (GETPOST('fournisseur', 'int') != '' ? GETPOST('fournisseur', 'int') : (GETPOST("type", 'alpha') == '' ? $default : $object->fournisseur)), 1, 0, (GETPOST("type", 'alpha') == '' ? 1 : 0), 1);
-				print '</td>';
+				// print '<tr>';
+				// print '<td>'.$form->editfieldkey('Vendor', 'fournisseur', '', $object, 0, 'string', '', 1).'</td><td>';
+				// $default = -1;
+				// if (getDolGlobalString('THIRDPARTY_SUPPLIER_BY_DEFAULT')) {
+				// 	$default = 1;
+				// }
+				// print $form->selectyesno("fournisseur", (GETPOST('fournisseur', 'int') != '' ? GETPOST('fournisseur', 'int') : (GETPOST("type", 'alpha') == '' ? $default : $object->fournisseur)), 1, 0, (GETPOST("type", 'alpha') == '' ? 1 : 0), 1);
+				// print '</td>';
 
 
-				if ($conf->browser->layout == 'phone') {
-					print '</tr><tr>';
-				}
+				// if ($conf->browser->layout == 'phone') {
+				// 	print '</tr><tr>';
+				// }
 
-				print '<td>';
-				if ((isModEnabled("fournisseur") && $user->hasRight('fournisseur', 'lire') && !getDolGlobalString('MAIN_USE_NEW_SUPPLIERMOD')) || (isModEnabled("supplier_order") && $user->hasRight('supplier_order', 'lire')) || (isModEnabled("supplier_invoice") && $user->hasRight('supplier_invoice', 'lire'))) {
-					print $form->editfieldkey('SupplierCode', 'supplier_code', '', $object, 0);
-				}
-				print '</td><td>';
-				if ((isModEnabled("fournisseur") && $user->hasRight('fournisseur', 'lire') && !getDolGlobalString('MAIN_USE_NEW_SUPPLIERMOD')) || (isModEnabled("supplier_order") && $user->hasRight('supplier_order', 'lire')) || (isModEnabled("supplier_invoice") && $user->hasRight('supplier_invoice', 'lire'))) {
-					print '<table class="nobordernopadding"><tr><td>';
-					$tmpcode = $object->code_fournisseur;
-					if (empty($tmpcode) && !empty($modCodeFournisseur->code_auto)) {
-						$tmpcode = $modCodeFournisseur->getNextValue($object, 1);
-					}
-					print '<input type="text" name="supplier_code" id="supplier_code" class="maxwidthonsmartphone" value="'.dol_escape_htmltag($tmpcode).'" maxlength="24">';
-					print '</td><td>';
-					$s = $modCodeFournisseur->getToolTip($langs, $object, 1);
-					print $form->textwithpicto('', $s, 1);
-					print '</td></tr></table>';
-				}
-				print '</td></tr>';
+				// print '<td>';
+				// if ((isModEnabled("fournisseur") && $user->hasRight('fournisseur', 'lire') && !getDolGlobalString('MAIN_USE_NEW_SUPPLIERMOD')) || (isModEnabled("supplier_order") && $user->hasRight('supplier_order', 'lire')) || (isModEnabled("supplier_invoice") && $user->hasRight('supplier_invoice', 'lire'))) {
+				// 	print $form->editfieldkey('SupplierCode', 'supplier_code', '', $object, 0);
+				// }
+				// print '</td><td>';
+				// if ((isModEnabled("fournisseur") && $user->hasRight('fournisseur', 'lire') && !getDolGlobalString('MAIN_USE_NEW_SUPPLIERMOD')) || (isModEnabled("supplier_order") && $user->hasRight('supplier_order', 'lire')) || (isModEnabled("supplier_invoice") && $user->hasRight('supplier_invoice', 'lire'))) {
+				// 	print '<table class="nobordernopadding"><tr><td>';
+				// 	$tmpcode = $object->code_fournisseur;
+				// 	if (empty($tmpcode) && !empty($modCodeFournisseur->code_auto)) {
+				// 		$tmpcode = $modCodeFournisseur->getNextValue($object, 1);
+				// 	}
+				// 	print '<input type="text" name="supplier_code" id="supplier_code" class="maxwidthonsmartphone" value="'.dol_escape_htmltag($tmpcode).'" maxlength="24">';
+				// 	print '</td><td>';
+				// 	$s = $modCodeFournisseur->getToolTip($langs, $object, 1);
+				// 	print $form->textwithpicto('', $s, 1);
+				// 	print '</td></tr></table>';
+				// }
+				// print '</td></tr>';
 			}
 
 			// Status
@@ -1481,29 +1539,56 @@ if (is_object($objcanvas) && $objcanvas->displayCanvasExists($canvasdisplayactio
 				print '</td></tr>';
 			}
 
-			// Phone / Fax
-			print '<tr><td>'.$form->editfieldkey('Phone', 'phone', '', $object, 0).'</td>';
-			print '<td'.($conf->browser->layout == 'phone' ? ' colspan="3"' : '').'>'.img_picto('', 'object_phoning', 'class="pictofixedwidth"').' <input type="text" name="phone" id="phone" class="maxwidth200 widthcentpercentminusx" value="'.(GETPOSTISSET('phone') ? GETPOST('phone', 'alpha') : $object->phone).'"></td>';
-			if ($conf->browser->layout == 'phone') {
-				print '</tr><tr>';
-			}
-
-			// SE ELMINA EL FAX
 
 
-			// print '<td>'.$form->editfieldkey('Fax', 'fax', '', $object, 0).'</td>';
-			// print '<td'.($conf->browser->layout == 'phone' ? ' colspan="3"' : '').'>'.img_picto('', 'object_phoning_fax', 'class="pictofixedwidth"').' <input type="text" name="fax" id="fax" class="maxwidth200 widthcentpercentminusx" value="'.(GETPOSTISSET('fax') ? GETPOST('fax', 'alpha') : $object->fax).'"></td></tr>';
 
-			// Email / Web
-			print '<tr><td>'.$form->editfieldkey('EMail', 'email', '', $object, 0, 'string', '', !getDolGlobalString('SOCIETE_EMAIL_MANDATORY') ? '' : $conf->global->SOCIETE_EMAIL_MANDATORY).'</td>';
-			print '<td'.(($conf->browser->layout == 'phone') || !isModEnabled('mailing') ? ' colspan="3"' : '').'>'.img_picto('', 'object_email', 'class="pictofixedwidth"').' <input type="text" class="maxwidth200 widthcentpercentminusx" name="email" id="email" value="'.$object->email.'"></td>';
-			if (isModEnabled('mailing') && getDolGlobalString('THIRDPARTY_SUGGEST_ALSO_ADDRESS_CREATION')) {
+
+
+
+
+
+						// Mostrar campo de teléfono con validación requerida
+				print '<tr><td class="fieldrequired">'.$form->editfieldkey('Phone', 'phone', '', $object, 0).'</td>';
+				print '<td'.($conf->browser->layout == 'phone' ? ' colspan="3"' : '').'>'.img_picto('', 'object_phoning', 'class="pictofixedwidth"').' ';
+				print '<input type="number" name="phone" id="phone" class="maxwidth200 widthcentpercentminusx" value="'.(GETPOSTISSET('phone') ? GETPOST('phone', 'alpha') : $object->phone).'"></td>';
+
+				// Si el layout es para teléfonos, cerrar y abrir la fila
 				if ($conf->browser->layout == 'phone') {
 					print '</tr><tr>';
 				}
-				print '<td class="individualline noemail">'.$form->editfieldkey($langs->trans('No_Email') .' ('.$langs->trans('Contact').')', 'contact_no_email', '', $object, 0).'</td>';
-				print '<td class="individualline" '.(($conf->browser->layout == 'phone') || !isModEnabled('mailing') ? ' colspan="3"' : '').'>'.$form->selectyesno('contact_no_email', (GETPOSTISSET("contact_no_email") ? GETPOST("contact_no_email", 'alpha') : (empty($object->no_email) ? 0 : 1)), 1, false, 1).'</td>';
-			}
+
+			
+				// SE ELMINA EL FAX
+
+
+				// print '<td>'.$form->editfieldkey('Fax', 'fax', '', $object, 0).'</td>';
+				// print '<td'.($conf->browser->layout == 'phone' ? ' colspan="3"' : '').'>'.img_picto('', 'object_phoning_fax', 'class="pictofixedwidth"').' <input type="text" name="fax" id="fax" class="maxwidth200 widthcentpercentminusx" value="'.(GETPOSTISSET('fax') ? GETPOST('fax', 'alpha') : $object->fax).'"></td></tr>';
+
+
+/**
+ * 
+ * 
+ * email validacion 
+ * 
+ * 
+ */
+
+
+
+				// Mostrar campo de email con validación requerida
+				print '<tr><td class="fieldrequired">'.$form->editfieldkey('EMail', 'email', '', $object, 0, 'string', '', !getDolGlobalString('SOCIETE_EMAIL_MANDATORY') ? '' : $conf->global->SOCIETE_EMAIL_MANDATORY).'</td>';
+				print '<td'.(($conf->browser->layout == 'phone') || !isModEnabled('mailing') ? ' colspan="3"' : '').'>'.img_picto('', 'object_email', 'class="pictofixedwidth"').' <input type="text" class="maxwidth200 widthcentpercentminusx" name="email" id="email" value="'.dol_escape_htmltag($object->email).'"></td>';
+
+
+				// Mostrar campo de contacto sin email si está habilitado
+				if (isModEnabled('mailing') && getDolGlobalString('THIRDPARTY_SUGGEST_ALSO_ADDRESS_CREATION')) {
+					if ($conf->browser->layout == 'phone') {
+						print '</tr><tr>';
+					}
+					print '<td class="individualline noemail">'.$form->editfieldkey($langs->trans('No_Email') .' ('.$langs->trans('Contact').')', 'contact_no_email', '', $object, 0).'</td>';
+					print '<td class="individualline" '.(($conf->browser->layout == 'phone') || !isModEnabled('mailing') ? ' colspan="3"' : '').'>'.$form->selectyesno('contact_no_email', (GETPOSTISSET("contact_no_email") ? GETPOST("contact_no_email", 'alpha') : (empty($object->no_email) ? 0 : 1)), 1, false, 1).'</td>';
+				}
+
 
 			// SE ELIMINA WEL WEB SITE
 			// print '</tr>';
@@ -1830,6 +1915,7 @@ se elimino LAINFORMACION DEL CAPLITAL
 		}
 
 		print dol_get_fiche_end();
+		
 
 		print $form->buttonsSaveCancel("AddThirdParty", 'Cancel', null, 0, '', $dol_openinpopup);
 
@@ -2110,18 +2196,18 @@ se elimino LAINFORMACION DEL CAPLITAL
 				print '<tr id="name_alias"><td><label for="name_alias_input">'.$langs->trans('Apellido').'</label></td>';
 				print '<td colspan="3"><input type="text" class="minwidth300" name="name_alias" id="name_alias_input" value="'.dol_escape_htmltag($object->name_alias).'"></td></tr>';
 
-				// Prefix
-				if (getDolGlobalString('SOCIETE_USEPREFIX')) {  // Old not used prefix field
-					print '<tr><td>'.$form->editfieldkey('Prefix', 'prefix', '', $object, 0).'</td><td colspan="3">';
-					// It does not change the prefix mode using the auto numbering prefix
-					if (($prefixCustomerIsUsed || $prefixSupplierIsUsed) && $object->prefix_comm) {
-						print '<input type="hidden" name="prefix_comm" value="'.dol_escape_htmltag($object->prefix_comm).'">';
-						print $object->prefix_comm;
-					} else {
-						print '<input type="text" size="5" maxlength="5" name="prefix_comm" id="prefix" value="'.dol_escape_htmltag($object->prefix_comm).'">';
-					}
-					print '</td>';
-				}
+								// // Prefix
+								// if (getDolGlobalString('SOCIETE_USEPREFIX')) {  // Old not used prefix field
+								// 	print '<tr><td>'.$form->editfieldkey('Prefix', 'prefix', '', $object, 0).'</td><td colspan="3">';
+								// 	// It does not change the prefix mode using the auto numbering prefix
+								// 	if (($prefixCustomerIsUsed || $prefixSupplierIsUsed) && $object->prefix_comm) {
+								// 		print '<input type="hidden" name="prefix_comm" value="'.dol_escape_htmltag($object->prefix_comm).'">';
+								// 		print $object->prefix_comm;
+								// 	} else {
+								// 		print '<input type="text" size="5" maxlength="5" name="prefix_comm" id="prefix" value="'.dol_escape_htmltag($object->prefix_comm).'">';
+								// 	}
+								// 	print '</td>';
+								// }
 
 				// Prospect/Customer
 				print '<tr><td>'.$form->editfieldkey('ProspectCustomer', 'customerprospect', '', $object, 0, 'string', '', 1).'</td>';
@@ -2156,45 +2242,52 @@ se elimino LAINFORMACION DEL CAPLITAL
 
 				print '</td></tr>';
 
-				// Supplier
-				if (((isModEnabled("fournisseur") && $user->hasRight('fournisseur', 'lire') && !getDolGlobalString('MAIN_USE_NEW_SUPPLIERMOD')) || (isModEnabled("supplier_order") && $user->hasRight('supplier_order', 'lire')) || (isModEnabled("supplier_invoice") && $user->hasRight('supplier_invoice', 'lire')))
-					|| (isModEnabled('supplier_proposal') && $user->hasRight('supplier_proposal', 'lire'))) {
-					print '<tr>';
-					print '<td>'.$form->editfieldkey('Supplier', 'fournisseur', '', $object, 0, 'string', '', 1).'</td>';
-					print '<td class="maxwidthonsmartphone">';
-					print $form->selectyesno("fournisseur", $object->fournisseur, 1, false, 0, 1);
-					print '</td>';
-					if ($conf->browser->layout == 'phone') {
-						print '</tr><tr>';
-					}
-					print '<td>';
-					if ((isModEnabled("fournisseur") && $user->hasRight('fournisseur', 'lire') && !getDolGlobalString('MAIN_USE_NEW_SUPPLIERMOD')) || (isModEnabled("supplier_order") && $user->hasRight('supplier_order', 'lire')) || (isModEnabled("supplier_invoice") && $user->hasRight('supplier_invoice', 'lire'))) {
-						print $form->editfieldkey('SupplierCode', 'supplier_code', '', $object, 0);
-					}
-					print '</td>';
-					print '<td>';
-					print '<table class="nobordernopadding"><tr><td>';
-					if ((!$object->code_fournisseur || $object->code_fournisseur == -1) && $modCodeFournisseur->code_auto) {
-						$tmpcode = $object->code_fournisseur;
-						if (empty($tmpcode) && !empty($object->oldcopy->code_fournisseur)) {
-							$tmpcode = $object->oldcopy->code_fournisseur; // When there is an error to update a thirdparty, the number for supplier and customer code is kept to old value.
-						}
-						if (empty($tmpcode) && !empty($modCodeFournisseur->code_auto)) {
-							$tmpcode = $modCodeFournisseur->getNextValue($object, 1);
-						}
-						print '<input type="text" name="supplier_code" id="supplier_code" size="16" value="'.dol_escape_htmltag($tmpcode).'" maxlength="24">';
-					} elseif ($object->codefournisseur_modifiable()) {
-						print '<input type="text" name="supplier_code" id="supplier_code" size="16" value="'.dol_escape_htmltag($object->code_fournisseur).'" maxlength="24">';
-					} else {
-						print $object->code_fournisseur;
-						print '<input type="hidden" name="supplier_code" value="'.$object->code_fournisseur.'">';
-					}
-					print '</td><td>';
-					$s = $modCodeFournisseur->getToolTip($langs, $object, 1);
-					print $form->textwithpicto('', $s, 1);
-					print '</td></tr></table>';
-					print '</td></tr>';
-				}
+
+
+				/** 
+				 * 
+				 * 
+				 * se elimino del proevedor
+				 */
+				// // Supplier
+				// if (((isModEnabled("fournisseur") && $user->hasRight('fournisseur', 'lire') && !getDolGlobalString('MAIN_USE_NEW_SUPPLIERMOD')) || (isModEnabled("supplier_order") && $user->hasRight('supplier_order', 'lire')) || (isModEnabled("supplier_invoice") && $user->hasRight('supplier_invoice', 'lire')))
+				// 	|| (isModEnabled('supplier_proposal') && $user->hasRight('supplier_proposal', 'lire'))) {
+				// 	print '<tr>';
+				// 	print '<td>'.$form->editfieldkey('Supplier', 'fournisseur', '', $object, 0, 'string', '', 1).'</td>';
+				// 	print '<td class="maxwidthonsmartphone">';
+				// 	print $form->selectyesno("fournisseur", $object->fournisseur, 1, false, 0, 1);
+				// 	print '</td>';
+				// 	if ($conf->browser->layout == 'phone') {
+				// 		print '</tr><tr>';
+				// 	}
+				// 	print '<td>';
+				// 	if ((isModEnabled("fournisseur") && $user->hasRight('fournisseur', 'lire') && !getDolGlobalString('MAIN_USE_NEW_SUPPLIERMOD')) || (isModEnabled("supplier_order") && $user->hasRight('supplier_order', 'lire')) || (isModEnabled("supplier_invoice") && $user->hasRight('supplier_invoice', 'lire'))) {
+				// 		print $form->editfieldkey('SupplierCode', 'supplier_code', '', $object, 0);
+				// 	}
+				// 	print '</td>';
+				// 	print '<td>';
+				// 	print '<table class="nobordernopadding"><tr><td>';
+				// 	if ((!$object->code_fournisseur || $object->code_fournisseur == -1) && $modCodeFournisseur->code_auto) {
+				// 		$tmpcode = $object->code_fournisseur;
+				// 		if (empty($tmpcode) && !empty($object->oldcopy->code_fournisseur)) {
+				// 			$tmpcode = $object->oldcopy->code_fournisseur; // When there is an error to update a thirdparty, the number for supplier and customer code is kept to old value.
+				// 		}
+				// 		if (empty($tmpcode) && !empty($modCodeFournisseur->code_auto)) {
+				// 			$tmpcode = $modCodeFournisseur->getNextValue($object, 1);
+				// 		}
+				// 		print '<input type="text" name="supplier_code" id="supplier_code" size="16" value="'.dol_escape_htmltag($tmpcode).'" maxlength="24">';
+				// 	} elseif ($object->codefournisseur_modifiable()) {
+				// 		print '<input type="text" name="supplier_code" id="supplier_code" size="16" value="'.dol_escape_htmltag($object->code_fournisseur).'" maxlength="24">';
+				// 	} else {
+				// 		print $object->code_fournisseur;
+				// 		print '<input type="hidden" name="supplier_code" value="'.$object->code_fournisseur.'">';
+				// 	}
+				// 	print '</td><td>';
+				// 	$s = $modCodeFournisseur->getToolTip($langs, $object, 1);
+				// 	print $form->textwithpicto('', $s, 1);
+				// 	print '</td></tr></table>';
+				// 	print '</td></tr>';
+				// }
 
 				// Barcode
 				if (isModEnabled('barcode')) {
@@ -2259,12 +2352,7 @@ se elimino LAINFORMACION DEL CAPLITAL
 					print '</td></tr>';
 				}
 
-				// Phone / Fax
-				print '<tr><td>'.$form->editfieldkey('Phone', 'phone', GETPOST('phone', 'alpha'), $object, 0).'</td>';
-				print '<td'.($conf->browser->layout == 'phone' ? ' colspan="3"' : '').'>'.img_picto('', 'object_phoning', 'class="pictofixedwidth"').' <input type="text" name="phone" id="phone" class="maxwidth200 widthcentpercentminusx" value="'.(GETPOSTISSET('phone') ? GETPOST('phone', 'alpha') : $object->phone).'"></td>';
-				if ($conf->browser->layout == 'phone') {
-					print '</tr><tr>';
-				}
+				
 				/**
 				 * ELIMINAMOS EL FAX
 				 * 
@@ -2282,7 +2370,7 @@ se elimino LAINFORMACION DEL CAPLITAL
 				// print '<td colspan="3">'.img_picto('', 'globe', 'class="pictofixedwidth"').' <input type="text" name="url" id="url" class="maxwidth200onsmartphone maxwidth300 widthcentpercentminusx " value="'.(GETPOSTISSET('url') ? GETPOST('url', 'alpha') : $object->url).'"></td></tr>';
 
 				// EMail
-				print '<tr><td>'.$form->editfieldkey('EMail', 'email', GETPOST('email', 'alpha'), $object, 0, 'string', '', (getDolGlobalString('SOCIETE_EMAIL_MANDATORY'))).'</td>';
+				print '<tr><td class="fieldrequired">'.$form->editfieldkey('EMail', 'email', GETPOST('email', 'alpha'), $object, 0, 'string', '', (getDolGlobalString('SOCIETE_EMAIL_MANDATORY'))).'</td>';
 				print '<td colspan="3">';
 				print img_picto('', 'object_email', 'class="pictofixedwidth"');
 				print '<input type="text" name="email" id="email" class="maxwidth500 widthcentpercentminusx" value="'.(GETPOSTISSET('email') ? GETPOST('email', 'alpha') : $object->email).'">';
@@ -2323,6 +2411,37 @@ se elimino LAINFORMACION DEL CAPLITAL
 					print '</td>';
 					print '</tr>';
 				}
+
+
+
+
+
+
+
+
+// Phone / Fax
+						
+// Mostrar campo de teléfono con validación requerida
+				print '<tr><td class="fieldrequired">'.$form->editfieldkey('Phone', 'phone', '', $object, 0).'</td>';
+				print '<td'.($conf->browser->layout == 'phone' ? ' colspan="3"' : '').'>'.img_picto('', 'object_phoning', 'class="pictofixedwidth"').' ';
+				print '<input type="tel" name="phone" id="phone" class="maxwidth200 widthcentpercentminusx" value="'.(GETPOSTISSET('phone') ? GETPOST('phone', 'alpha') : $object->phone).'"></td>';
+					
+				// Si el layout es para teléfonos, cerrar y abrir la fila
+				if ($conf->browser->layout == 'phone') {
+						print '</tr><tr>';
+									}
+					
+				
+					
+
+
+
+
+
+
+
+
+
 
 				/**
 				 * 
