@@ -2737,7 +2737,10 @@ se elimino LAINFORMACION DEL CAPLITAL
 				print '</td>';
 				print '</tr>';
 
-				// Assign sale representative
+				$usursioActual=$user->login;
+				if ($usursioActual=='SUPER') {
+					// Si el usuario es admin, permitir edición
+					// Assign sale representative
 				print '<tr>';
 				print '<td>'.$form->editfieldkey('AllocateCommercial', 'commercial_id', '', $object, 0).'</td>';
 				print '<td colspan="3" class="maxwidthonsmartphone">';
@@ -2754,6 +2757,11 @@ se elimino LAINFORMACION DEL CAPLITAL
 				if (getDolGlobalString('ACCOUNTANCY_USE_PRODUCT_ACCOUNT_ON_THIRDPARTY')) {
 					print '<br>';
 					print '<table class="border centpercent">';
+				}
+
+
+
+				
 
 					if (isModEnabled('accounting')) {
 						// Accountancy_code_sell
