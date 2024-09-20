@@ -154,7 +154,7 @@
 	 * 
 	 */
 
-	if ($action == 'upload_image') {
+	 if ($action == 'upload_image') {
 		$upload_dir = $conf->product->multidir_output[$object->entity];
 		
 		// Verificar que se haya subido un archivo
