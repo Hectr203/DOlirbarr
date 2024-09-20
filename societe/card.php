@@ -1875,16 +1875,6 @@ se elimino LAINFORMACION DEL CAPLITAL
 
 			
 
-			// Add logo
-			print '<tr class="hideonsmartphone">';
-			print '<td>'.$form->editfieldkey('Logo', 'photoinput', '', $object, 0).'</td>';
-			print '<td colspan="3">';
-			print '<input class="flat" type="file" name="photo" id="photoinput" />';
-			print '</td>';
-			print '</tr>';
-
-			print '</table>'."\n";
-
 			// Accountancy codes
 			if (getDolGlobalString('ACCOUNTANCY_USE_PRODUCT_ACCOUNT_ON_THIRDPARTY')) {
 				print '<table class="border centpercent">';
@@ -2708,34 +2698,7 @@ se elimino LAINFORMACION DEL CAPLITAL
 				// }
 
 				// Logo
-				print '<tr class="hideonsmartphone">';
-				print '<td>'.$form->editfieldkey('Logo', 'photoinput', '', $object, 0).'</td>';
-				print '<td colspan="3">';
-				if ($object->logo) {
-					print $form->showphoto('societe', $object);
-				}
-				$caneditfield = 1;
-				if ($caneditfield) {
-					if ($object->logo) {
-						print "<br>\n";
-					}
-					print '<table class="nobordernopadding">';
-					if ($object->logo) {
-						print '<tr><td><input type="checkbox" class="flat photodelete" name="deletephoto" id="photodelete"> <label for="photodelete">'.$langs->trans("Delete").'</photo><br><br></td></tr>';
-					}
-					//print '<tr><td>'.$langs->trans("PhotoFile").'</td></tr>';
-					print '<tr><td>';
-					$maxfilesizearray = getMaxFileSizeArray();
-					$maxmin = $maxfilesizearray['maxmin'];
-					if ($maxmin > 0) {
-						print '<input type="hidden" name="MAX_FILE_SIZE" value="'.($maxmin * 1024).'">';	// MAX_FILE_SIZE must precede the field type=file
-					}
-					print '<input type="file" class="flat" name="photo" id="photoinput">';
-					print '</td></tr>';
-					print '</table>';
-				}
-				print '</td>';
-				print '</tr>';
+			
 
 				$usursioActual=$user->login;
 				if ($usursioActual=='SUPER') {
@@ -2763,29 +2726,7 @@ se elimino LAINFORMACION DEL CAPLITAL
 
 				
 
-					if (isModEnabled('accounting')) {
-						// Accountancy_code_sell
-						print '<tr><td class="titlefield">'.$langs->trans("ProductAccountancySellCode").'</td>';
-						print '<td>';
-						print $formaccounting->select_account($object->accountancy_code_sell, 'accountancy_code_sell', 1, '', 1, 1);
-						print '</td></tr>';
-
-						// Accountancy_code_buy
-						print '<tr><td>'.$langs->trans("ProductAccountancyBuyCode").'</td>';
-						print '<td>';
-						print $formaccounting->select_account($object->accountancy_code_buy, 'accountancy_code_buy', 1, '', 1, 1);
-						print '</td></tr>';
-					} else { // For external software
-						// Accountancy_code_sell
-						print '<tr><td class="titlefield">'.$langs->trans("ProductAccountancySellCode").'</td>';
-						print '<td><input name="accountancy_code_sell" class="maxwidth200" value="'.$object->accountancy_code_sell.'">';
-						print '</td></tr>';
-
-						// Accountancy_code_buy
-						print '<tr><td>'.$langs->trans("ProductAccountancyBuyCode").'</td>';
-						print '<td><input name="accountancy_code_buy" class="maxwidth200" value="'.$object->accountancy_code_buy.'">';
-						print '</td></tr>';
-					}
+					
 					print '</table>';
 				}
 			}
