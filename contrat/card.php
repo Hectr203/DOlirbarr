@@ -2081,6 +2081,13 @@ if ($action == 'create') {
 		}
 		print '</div>';
 
+
+
+
+		
+
+
+		/*
 		// Form to add new line
 		if ($user->hasRight('contrat', 'creer') && ($object->statut == 0)) {
 			$dateSelector = 1;
@@ -2120,7 +2127,14 @@ if ($action == 'create') {
 			print '</table>';
 			print '</div>';
 			print '</form>';
-		}
+		} */
+
+
+
+
+
+
+
 
 		print dol_get_fiche_end();
 
@@ -2257,48 +2271,68 @@ if ($action == 'create') {
 			print "</div>";
 		}
 
-		if ($action != 'presend') {
-			print '<div class="fichecenter"><div class="fichehalfleft">';
+		// if ($action != 'presend') {
+		// 	print '<div class="fichecenter"><div class="fichehalfleft">';
 
-			/*
-			 * Generated documents
-			 */
-			$filename = dol_sanitizeFileName($object->ref);
-			$filedir = $conf->contrat->multidir_output[$object->entity]."/".dol_sanitizeFileName($object->ref);
-			$urlsource = $_SERVER["PHP_SELF"]."?id=".$object->id;
-			$genallowed = $user->hasRight('contrat', 'lire');
-			$delallowed = $user->hasRight('contrat', 'creer');
-
-
-			print $formfile->showdocuments('contract', $filename, $filedir, $urlsource, $genallowed, $delallowed, ($object->model_pdf ? $object->model_pdf : getDolGlobalString('CONTRACT_ADDON_PDF')), 1, 0, 0, 28, 0, '', 0, '', $soc->default_lang, '', $object);
+		// 	/*
+		// 	 * Generated documents
+		// 	 */
+		// 	$filename = dol_sanitizeFileName($object->ref);
+		// 	$filedir = $conf->contrat->multidir_output[$object->entity]."/".dol_sanitizeFileName($object->ref);
+		// 	$urlsource = $_SERVER["PHP_SELF"]."?id=".$object->id;
+		// 	$genallowed = $user->hasRight('contrat', 'lire');
+		// 	$delallowed = $user->hasRight('contrat', 'creer');
 
 
-			// Show links to link elements
-			$linktoelem = $form->showLinkToObjectBlock($object, null, array('contrat'));
-			$somethingshown = $form->showLinkedObjectBlock($object, $linktoelem);
-
-			// Show online signature link
-			if ($object->statut != Contrat::STATUS_DRAFT && getDolGlobalString('CONTRACT_ALLOW_ONLINESIGN')) {
-				print '<br><!-- Link to sign -->';
-				require_once DOL_DOCUMENT_ROOT.'/core/lib/signature.lib.php';
-
-				print showOnlineSignatureUrl('contract', $object->ref).'<br>';
-			}
-
-			print '</div><div class="fichehalfright">';
-
-			$MAXEVENT = 10;
-
-			$morehtmlcenter = dolGetButtonTitle($langs->trans('SeeAll'), '', 'fa fa-bars imgforviewmode', DOL_URL_ROOT.'/contrat/agenda.php?id='.$object->id);
+		// 	print $formfile->showdocuments('contract', $filename, $filedir, $urlsource, $genallowed, $delallowed, ($object->model_pdf ? $object->model_pdf : getDolGlobalString('CONTRACT_ADDON_PDF')), 1, 0, 0, 28, 0, '', 0, '', $soc->default_lang, '', $object);
 
 
-			// List of actions on element
-			include_once DOL_DOCUMENT_ROOT.'/core/class/html.formactions.class.php';
-			$formactions = new FormActions($db);
-			$somethingshown = $formactions->showactions($object, 'contract', $socid, 1, 'listactions', $MAXEVENT, '', $morehtmlcenter);
+		// 	// Show links to link elements
+		// 	$linktoelem = $form->showLinkToObjectBlock($object, null, array('contrat'));
+		// 	$somethingshown = $form->showLinkedObjectBlock($object, $linktoelem);
 
-			print '</div></div>';
-		}
+		// 	// Show online signature link
+		// 	if ($object->statut != Contrat::STATUS_DRAFT && getDolGlobalString('CONTRACT_ALLOW_ONLINESIGN')) {
+		// 		print '<br><!-- Link to sign -->';
+		// 		require_once DOL_DOCUMENT_ROOT.'/core/lib/signature.lib.php';
+
+		// 		print showOnlineSignatureUrl('contract', $object->ref).'<br>';
+		// 	}
+
+		// 	print '</div><div class="fichehalfright">';
+
+		// 	$MAXEVENT = 10;
+
+		// 	$morehtmlcenter = dolGetButtonTitle($langs->trans('SeeAll'), '', 'fa fa-bars imgforviewmode', DOL_URL_ROOT.'/contrat/agenda.php?id='.$object->id);
+
+
+		// 	// List of actions on element
+		// 	include_once DOL_DOCUMENT_ROOT.'/core/class/html.formactions.class.php';
+		// 	$formactions = new FormActions($db);
+		// 	$somethingshown = $formactions->showactions($object, 'contract', $socid, 1, 'listactions', $MAXEVENT, '', $morehtmlcenter);
+
+		// 	print '</div></div>';
+		// }
+
+
+// Comienzo del formulario para pedir  el folio 
+print '<form action="'.$_SERVER["PHP_SELF"].'" method="POST">';
+print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+
+// Campo de texto para el folio del contrato
+print '<table class="border" width="100%">';
+print '<tr><td>'.$langs->trans("Folio de Contrato").'<input type="text" name="folio_contrato"  value="" required>';
+//botoon de generar el contrato 
+print '<input type="submit" class="button" value="'.$langs->trans("Generar Contrato").'">
+</td></tr>';
+print '</table>';
+
+
+
+// Cierre del formulario
+print '</form>';
+
+
 
 		// Presend form
 		$modelmail = 'contract';

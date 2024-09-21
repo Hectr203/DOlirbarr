@@ -133,21 +133,13 @@ if ($action == 'upload_image' && $permissiontoadd) {
         $sql = "UPDATE ".MAIN_DB_PREFIX."product SET image_base64 = '".$db->escape($image_base64)."' WHERE rowid = ".$object->id;
         $resql = $db->query($sql);
         if ($resql) {
-            setEventMessages($langs->trans('ImageSavedBase64'), null, 'mesgs');
+            setEventMessages($langs->trans('Imagen guardada del producto'), null, 'mesgs');
         } else {
-            setEventMessages($langs->trans('ErrorSavingImageBase64'), null, 'errors');
+            setEventMessages($langs->trans('Error al guardar la iamgen'), null, 'errors');
         }
 
-        // Guardar la imagen en el sistema de archivos (reutilizando la funcionalidad de Dolibarr)
-        $dir = $upload_dir;
-        $resupload = dol_move_uploaded_file($_FILES['product_image']['tmp_name'], $dir."/".$_FILES['product_image']['name'], 1);
-        if ($resupload > 0) {
-            setEventMessages($langs->trans('ImageSavedFile'), null, 'mesgs');
-        } else {
-            setEventMessages($langs->trans('ErrorSavingImageFile'), null, 'errors');
-        }
-    } else {
-        setEventMessages($langs->trans('NoImageSelected'), null, 'errors');
+	}else{
+        setEventMessages($langs->trans('Imagen no seleccionada'), null, 'errors');
     }
 }
 
@@ -306,7 +298,7 @@ if ($object->id) {
 /*
  * Formulario para subir imagen (con token CSRF)
  */
-print "<h4>IMAGEN PARA EL PRODUCTO</H4>";
+print '<h2 >PORTADA DEL EL PRODUCTO</H2>';
 print '<form action="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'" method="POST" enctype="multipart/form-data">';
 print '<input type="hidden" name="token" value="'.newToken().'">'; // Añadir el token CSRF
 print '<input type="hidden" name="action" value="upload_image">';
@@ -362,23 +354,23 @@ print '</form>';
 			print  '<table class="noborder">';
 
 			// Get language
-			if (getDolGlobalInt('MAIN_MULTILANGS')) {
-				$langs->load("languages");
-
-				print  '<tr class="liste_titre"><td>';
-
-				$default_lang = empty($lang_id) ? $langs->getDefaultLang() : $lang_id;
-
-				$langs_available = $langs->get_available_languages(DOL_DOCUMENT_ROOT, 12);
-
-				print Form::selectarray('lang_id', $langs_available, $default_lang, 0, 0, 0, '', 0, 0, 0, 'ASC');
-
 				if (getDolGlobalInt('MAIN_MULTILANGS')) {
-					print  '<input type="submit" class="button" name="refresh" value="'.$langs->trans('Refresh').'">';
-				}
+					$langs->load("languages");
 
-				print  '</td></tr>';
-			}
+					print  '<tr class="liste_titre"><td>';
+
+					$default_lang = empty($lang_id) ? $langs->getDefaultLang() : $lang_id;
+
+					$langs_available = $langs->get_available_languages(DOL_DOCUMENT_ROOT, 12);
+
+					print Form::selectarray('lang_id', $langs_available, $default_lang, 0, 0, 0, '', 0, 0, 0, 'ASC');
+
+					if (getDolGlobalInt('MAIN_MULTILANGS')) {
+						print  '<input type="submit" class="button" name="refresh" value="'.$langs->trans('Refresh').'">';
+					}
+
+					print  '</td></tr>';
+				}
 
 			foreach ($filearray as $filetoadd) {
 				if ($ext = pathinfo($filetoadd['name'], PATHINFO_EXTENSION) == 'pdf') {
