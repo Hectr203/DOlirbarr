@@ -130,7 +130,7 @@ if ($action == 'upload_image' && $permissiontoadd) {
         $image_base64 = base64_encode($image_data); // Convierte la imagen a Base64
 
         // Guardar en base de datos
-        $sql = "UPDATE ".MAIN_DB_PREFIX."product SET image_base64 = '".$db->escape($image_base64)."' WHERE rowid = ".$object->id;
+        $sql = "UPDATE ".MAIN_DB_PREFIX."product SET image_path = '".$db->escape($image_base64)."' WHERE rowid = ".$object->id;
         $resql = $db->query($sql);
         if ($resql) {
             setEventMessages($langs->trans('Imagen guardada del producto'), null, 'mesgs');

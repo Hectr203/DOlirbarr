@@ -33,6 +33,7 @@
  *       \brief      Page of a contract
  */
 
+
 require "../main.inc.php";
 require_once DOL_DOCUMENT_ROOT.'/core/lib/date.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/price.lib.php';
@@ -2315,23 +2316,18 @@ if ($action == 'create') {
 		// }
 
 
-// Comienzo del formulario para pedir  el folio 
-print '<form action="'.$_SERVER["PHP_SELF"].'" method="POST">';
+
+
+// Mostrar el formulario para solicitar el folio del contrato
+print '<form name="formularioFolio" id="idFormularioFolio" action="	Generar_contrato/Generar_pdf/generar_contrato.php" method="POST">';
 print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
-
-// Campo de texto para el folio del contrato
+print '<input type="hidden" name="userId" value="'.$object->socid.'">'; 
 print '<table class="border" width="100%">';
-print '<tr><td>'.$langs->trans("Folio de Contrato").'<input type="text" name="folio_contrato"  value="" required>';
-//botoon de generar el contrato 
-print '<input type="submit" class="button" value="'.$langs->trans("Generar Contrato").'">
-</td></tr>';
+print '<tr><td>'.$langs->trans("Folio de Contrato").'<input type="text" name="folio_contrato" value="" required>';
+print '<input type="submit" class="button" value="'.$langs->trans("Generar Contrato").'">';
+print '</td></tr>';
 print '</table>';
-
-
-
-// Cierre del formulario
 print '</form>';
-
 
 
 		// Presend form
