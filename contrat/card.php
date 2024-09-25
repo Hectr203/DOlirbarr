@@ -2319,12 +2319,12 @@ if ($action == 'create') {
 
 
 // Mostrar el formulario para solicitar el folio del contrato
-print '<form name="formularioFolio" id="idFormularioFolio" action="	Generar_contrato/Generar_pdf/generar_contrato.php" method="POST">';
+print '<form name="formularioFolio" id="idFormularioFolio" action="Generar_contrato/Generar_pdf/datosFormularios.php" method="POST">';
 print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
 print '<input type="hidden" name="userId" value="'.$object->socid.'">'; 
 print '<table class="border" width="100%">';
 print '<tr><td>'.$langs->trans("Folio de Contrato").'<input type="text" name="folio_contrato" value="" required>';
-print '<input type="submit" class="button" value="'.$langs->trans("Generar Contrato").'">';
+print '<input type="submit" class="button" value="'.$langs->trans("Descargar Contrato").'">';
 print '</td></tr>';
 print '</table>';
 print '</form>';

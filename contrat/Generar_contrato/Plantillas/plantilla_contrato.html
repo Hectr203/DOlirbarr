@@ -7,9 +7,9 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
-            margin-left: 55px;
-            margin-right: 45px;
+            margin-top: 1px;
+            margin-left: 45px;
+            margin-right: 35px;
             font-size: 14px;
             color: #000;
             text-align: justify;
@@ -23,12 +23,12 @@
         .header-left {
             text-align: left;
             font-weight: bold;
-            font-size: 15px; /* Arial 15 para los textos de la izquierda */
+            font-size: 15px;
         }
         .header-right {
             text-align: right;
             font-weight: bold;
-            font-size: 15px; /* Arial 15 para el folio en la derecha */
+            font-size: 15px;
         }
         .content {
             line-height: 1.5;
@@ -41,7 +41,7 @@
         }
         .signature-table {
             width: 100%;
-            margin-top: 50px; /* Aumenté el espacio entre el texto y la zona de firmas */
+            margin-top: 250px;
         }
         .signature-table td {
             width: 33%;
@@ -50,11 +50,11 @@
         }
         .signature-line {
             border-bottom: 1px solid black;
-            width: 80%;
+            width: 100%;
             margin: 0 auto;
         }
         p {
-            margin-bottom: 20px; /* Espaciado adicional entre los párrafos */
+            margin-bottom: 20px;
         }
     </style>
     
@@ -63,6 +63,7 @@
 
     <div class="header-container">
         <div class="header-right">
+             <br>
             <strong>No. Folio: {{folio}}</strong>
         </div>
         <div class="header-left">
@@ -71,9 +72,9 @@
     </div>
 
     <div class="content">
-        <p><strong>ACUSE DE ENTREGA</strong></p>
-
-        <p><strong>C. {{cliente_nom}} {{cliente_name_alias}}</strong><br>
+        <p><strong>ACUSE DE ENTREGA</strong>
+            <br>
+            <strong>C. {{cliente_nom}} {{cliente_name_alias}}</strong><br>
         P R E S E N T E</p>
 
         <p>Por medio de la presente, y en cumplimiento al artículo 245 párrafo segundo de la Ley Federal de Protección a la Propiedad Industrial, Agua Inmaculada S.A. de C.V., en adelante el FRANQUICIANTE, hace entrega al Interesado en adquirir la FRANQUICIA la información relativa al estado que guarda su empresa, la cual se contempla en el documento denominado CIRCULAR DE OFERTA DE FRANQUICIA, en adelante “C.O.F.”, misma que, como consta en la presente, <strong>se entrega con 30 (treinta) días hábiles</strong> de anticipación a la Firma del Contrato de FRANQUICIA.</p>
@@ -82,33 +83,25 @@
 
         <p>El FRANQUICIANTE y el interesado reconocen que el Contrato de Franquicia que en su momento suscriban será la única fuente de derechos y obligaciones entre ellos, por lo que en el supuesto de que existiera contradicción entre el Contrato y la información contenida en este documento, prevalecerá el Contrato de FRANQUICIA.</p>
 
-        <p><strong>RECIBÍ DE CONFORMIDAD</strong></p>
-
-        <p>
-            <strong>{{cliente_nom}} {{cliente_name_alias}}</strong><br>
-            <span>{{FECHA}}</span> <!-- Aquí se coloca la fecha dinámica -->
-        </p>
-
         <table class="signature-table">
             <tr>
                 <td>
-                    <div class="signature-line"></div>
-                    <p>Firma</p>
+                    
                 </td>
                 <td>
                     <div class="signature-line"></div>
-                    <p>Nombre Completo</p>
+                    <p><strong>Firma</strong>  <br>
+                        <strong>RECIBÍ DE CONFORMIDAD</strong>
+                        <strong>{{cliente_nom}} {{cliente_name_alias}}</strong><br>
+                    </p>
                 </td>
                 <td>
-                    <div class="signature-line"></div>
-                    <p>Fecha</p>
                 </td>
             </tr>
         </table>
 
-        <p>Por lo anterior, declara Jonathan Alejandro Soto Rodriguez que recibió por parte de Agua Inmaculada, S.A de C.V., representada por el Sr. Omar Argüello Mancilla, la Circular de Oferta de Franquicia "C.O.F." con fecha <span id="fecha"></span>, dando cumplimiento a lo establecido en la normatividad citada anteriormente.</p>
+        <p>Por lo anterior, declara <strong>{{cliente_nom}} {{cliente_name_alias}}</strong> que recibió por parte de AQUAFILTEC S.A de C.V, la Circular de Oferta de Franquicia "C.O.F." con fecha: <strong>{{FECHA}}</strong>, dando cumplimiento a lo establecido en la normatividad citada anteriormente.</p>
 
-        <p><strong>Información Confidencial</strong></p>
     </div>
 </body>
 
