@@ -33,5 +33,5 @@ function generar_pdf_contrato($html,$folio) {
     $dompdf->render();
 
     // Enviar el PDF al navegadorryzz
-  echo  $dompdf->stream($folio.".pdf", array("Attachment" => false));
+  echo  $dompdf->stream($folio.".pdf", array("Attachment" => true));
 }
