@@ -2700,35 +2700,177 @@ se elimino LAINFORMACION DEL CAPLITAL
 				// Logo
 			
 
-				$usursioActual=$user->login;
-				if ($usursioActual=='SUPER') {
-					// Si el usuario es admin, permitir edición
-					// Assign sale representative
-				print '<tr>';
-				print '<td>'.$form->editfieldkey('AllocateCommercial', 'commercial_id', '', $object, 0).'</td>';
-				print '<td colspan="3" class="maxwidthonsmartphone">';
-				$userlist = $form->select_dolusers('', '', 0, null, 0, '', '', 0, 0, 0, 'AND u.statut = 1', 0, '', '', 0, 1);
-				$arrayselected = GETPOST('commercial', 'array');
-				if (empty($arrayselected)) {
-					$arrayselected = $object->getSalesRepresentatives($user, 1);
-				}
-				print img_picto('', 'user', 'class="pictofixedwidth"').$form->multiselectarray('commercial', $userlist, $arrayselected, 0, 0, 'quatrevingtpercent widthcentpercentminusx', 0, 0, '', '', '', 1);
-				print '</td></tr>';
+				// $usursioActual=$user->login;
+				// if ($usursioActual=='SUPER') {
+				// 		print '<tr>';
+				// 	print '<td>'.$form->editfieldkey('AllocateCommercial', 'commercial_id', '', $object, 0).'</td>';
+				// 	print '<td colspan="3" class="maxwidthonsmartphone">';
+				// 	$userlist = $form->select_dolusers('', '', 0, null, 0, '', '', 0, 0, 0, 'AND u.statut = 1', 0, '', '', 0, 1);
+				// 	$arrayselected = GETPOST('commercial', 'array');
+				// 	if (empty($arrayselected)) {
+				// 		$arrayselected = $object->getSalesRepresentatives($user, 1);
+				// 	}
+				// 	print img_picto('', 'user', 'class="pictofixedwidth"').$form->multiselectarray('commercial', $userlist, $arrayselected, 0, 0, 'quatrevingtpercent widthcentpercentminusx', 0, 0, '', '', '', 1);
+				// 	print '</td></tr>';
 
-				print '</table>';
+				// 	print '</table>';
 
-				if (getDolGlobalString('ACCOUNTANCY_USE_PRODUCT_ACCOUNT_ON_THIRDPARTY')) {
-					print '<br>';
-					print '<table class="border centpercent">';
-				}
+				// 	if (getDolGlobalString('ACCOUNTANCY_USE_PRODUCT_ACCOUNT_ON_THIRDPARTY')) {
+				// 		print '<br>';
+				// 		print '<table class="border centpercent">';
 
+				// 		if (isModEnabled('accounting')) {
+				// 			// Accountancy_code_sell
+				// 			print '<tr><td class="titlefield">'.$langs->trans("ProductAccountancySellCode").'</td>';
+				// 			print '<td>';
+				// 			print $formaccounting->select_account($object->accountancy_code_sell, 'accountancy_code_sell', 1, '', 1, 1);
+				// 			print '</td></tr>';
+
+				// 			// Accountancy_code_buy
+				// 			print '<tr><td>'.$langs->trans("ProductAccountancyBuyCode").'</td>';
+				// 			print '<td>';
+				// 			print $formaccounting->select_account($object->accountancy_code_buy, 'accountancy_code_buy', 1, '', 1, 1);
+				// 			print '</td></tr>';
+				// 		} else { // For external software
+				// 			// Accountancy_code_sell
+				// 			print '<tr><td class="titlefield">'.$langs->trans("ProductAccountancySellCode").'</td>';
+				// 			print '<td><input name="accountancy_code_sell" class="maxwidth200" value="'.$object->accountancy_code_sell.'">';
+				// 			print '</td></tr>';
+
+				// 			// Accountancy_code_buy
+				// 			print '<tr><td>'.$langs->trans("ProductAccountancyBuyCode").'</td>';
+				// 			print '<td><input name="accountancy_code_buy" class="maxwidth200" value="'.$object->accountancy_code_buy.'">';
+				// 			print '</td></tr>';
+				// 		}
+				// 		print '</table>';
+				// 	}
 
 
 				
 
 					
+				
+				
+				
+				
+				// }else{
+
+				// 	// Assign sale representative
+				// 	print '<tr>';
+				// 	print '<td>'.$form->editfieldkey('AllocateCommercial', 'commercial_id', '', $object, 0).'</td>';
+				// 	print '<td colspan="3" class="maxwidthonsmartphone">';
+				// 	$userlist = $form->select_dolusers('', '', 0, null, 0, '', '', 0, 0, 0, 'AND u.statut = 1', 0, '', '', 0, 1);
+				// 	$arrayselected = GETPOST('commercial', 'array');
+				// 	if (empty($arrayselected)) {
+				// 		$arrayselected = $object->getSalesRepresentatives($user, 1);
+				// 	}
+				// 	print img_picto('', 'user', 'class="pictofixedwidth"').$form->multiselectarray('commercial', $userlist, $arrayselected, 0, 0, 'quatrevingtpercent widthcentpercentminusx', 0, 0, '', '', '', 1);
+				// 	print '</td></tr>';
+
+				// 	print '</table>';
+
+				// 	if (getDolGlobalString('ACCOUNTANCY_USE_PRODUCT_ACCOUNT_ON_THIRDPARTY')) {
+				// 		print '<br>';
+				// 		print '<table class="border centpercent">';
+
+				// 		if (isModEnabled('accounting')) {
+				// 			// Accountancy_code_sell
+				// 			print '<tr><td class="titlefield">'.$langs->trans("ProductAccountancySellCode").'</td>';
+				// 			print '<td>';
+				// 			print $formaccounting->select_account($object->accountancy_code_sell, 'accountancy_code_sell', 1, '', 1, 1);
+				// 			print '</td></tr>';
+
+				// 			// Accountancy_code_buy
+				// 			print '<tr><td>'.$langs->trans("ProductAccountancyBuyCode").'</td>';
+				// 			print '<td>';
+				// 			print $formaccounting->select_account($object->accountancy_code_buy, 'accountancy_code_buy', 1, '', 1, 1);
+				// 			print '</td></tr>';
+				// 		} else { // For external software
+				// 			// Accountancy_code_sell
+				// 			print '<tr><td class="titlefield">'.$langs->trans("ProductAccountancySellCode").'</td>';
+				// 			print '<td><input name="accountancy_code_sell" class="maxwidth200" value="'.$object->accountancy_code_sell.'">';
+				// 			print '</td></tr>';
+
+				// 			// Accountancy_code_buy
+				// 			print '<tr><td>'.$langs->trans("ProductAccountancyBuyCode").'</td>';
+				// 			print '<td><input name="accountancy_code_buy" class="maxwidth200" value="'.$object->accountancy_code_buy.'">';
+				// 			print '</td></tr>';
+				// 		}
+				// 		print '</table>';
+				// 	}
+
+				// }
+
+
+				$usursioActual = $user->login;
+
+				if ($usursioActual == 'SUPER') {
+					print '<tr>';
+					print '<td>' . $form->editfieldkey('AllocateCommercial', 'commercial_id', '', $object, 0) . '</td>';
+					print '<td colspan="3" class="maxwidthonsmartphone">';
+					$userlist = $form->select_dolusers('', '', 0, null, 0, '', '', 0, 0, 0, 'AND u.statut = 1', 0, '', '', 0, 1);
+					$arrayselected = GETPOST('commercial', 'array');
+					if (empty($arrayselected)) {
+						$arrayselected = $object->getSalesRepresentatives($user, 1);
+					}
+					print img_picto('', 'user', 'class="pictofixedwidth"') . $form->multiselectarray('commercial', $userlist, $arrayselected, 0, 0, 'quatrevingtpercent widthcentpercentminusx', 0, 0, '', '', '', 1);
+					print '</td></tr>';
+					print '</table>';
+				
+					if (getDolGlobalString('ACCOUNTANCY_USE_PRODUCT_ACCOUNT_ON_THIRDPARTY')) {
+						print '<br>';
+						print '<table class="border centpercent">';
+						if (isModEnabled('accounting')) {
+							// Accountancy_code_sell
+							print '<tr><td class="titlefield">' . $langs->trans("ProductAccountancySellCode") . '</td>';
+							print '<td>';
+							print $formaccounting->select_account($object->accountancy_code_sell, 'accountancy_code_sell', 1, '', 1, 1);
+							print '</td></tr>';
+				
+							// Accountancy_code_buy
+							print '<tr><td>' . $langs->trans("ProductAccountancyBuyCode") . '</td>';
+							print '<td>';
+							print $formaccounting->select_account($object->accountancy_code_buy, 'accountancy_code_buy', 1, '', 1, 1);
+							print '</td></tr>';
+						} else { // For external software
+							// Accountancy_code_sell
+							print '<tr><td class="titlefield">' . $langs->trans("ProductAccountancySellCode") . '</td>';
+							print '<td><input name="accountancy_code_sell" class="maxwidth200" value="' . $object->accountancy_code_sell . '">';
+							print '</td></tr>';
+				
+							// Accountancy_code_buy
+							print '<tr><td>' . $langs->trans("ProductAccountancyBuyCode") . '</td>';
+							print '<td><input name="accountancy_code_buy" class="maxwidth200" value="' . $object->accountancy_code_buy . '">';
+							print '</td></tr>';
+						}
+						print '</table>';
+					}
+				}  else {
+					// Sección para otros usuarios que no son "SUPER"
+					print '<tr>';
+					
+
+					print '<div style="display:none;">';
+					$form->editfieldkey('AllocateCommercial', 'commercial_id', '', $object, 0) ;
+					print '</div>';
+					// Imprimir el multiselectarray pero de forma oculta
+					$userlist = $form->select_dolusers('', '', 0, null, 0, '', '', 0, 0, 0, 'AND u.statut = 1', 0, '', '', 0, 1);
+					$arrayselected = GETPOST('commercial', 'array');
+					if (empty($arrayselected)) {
+						$arrayselected = $object->getSalesRepresentatives($user, 1);
+					}
+					
+					// Imprimir el multiselect pero oculto
+					print '<div style="display:none;">';
+					print $form->multiselectarray('commercial', $userlist, $arrayselected, 0, 0, 'quatrevingtpercent widthcentpercentminusx', 0, 0, '', '', '', 1);
+					print '</div>';
+					
+					print '</td></tr>';
 					print '</table>';
 				}
+				
+
+
 			}
 
 			print '</div>';
